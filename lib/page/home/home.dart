@@ -15,17 +15,25 @@ class HomeMain extends StatefulWidget {
 
 class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   String userName = '';
+  bool isLoading = false;
 
   List<Berita> beritaList = [];
 
   void _loadBerita() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       final berita = await BeritaService.fetchBerita();
       setState(() {
-        beritaList = berita.reversed.take(5).toList(); // ambil 5 berita terbaru
+        beritaList = berita.reversed.take(5).toList();
       });
     } catch (e) {
       print(e.toString());
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -126,37 +134,37 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                     {
                       'title': 'ADUAN',
                       'image': 'assets/image/aduan.png',
-                      'route': '/iuran',
+                      'route': '/aduan',
                     },
                     {
                       'title': 'SURAT',
                       'image': 'assets/image/surat.png',
-                      'route': '/berita',
+                      'route': '/surat',
                     },
                     {
                       'title': 'IURAN',
                       'image': 'assets/image/iuran.png',
-                      'route': '/kegiatan',
+                      'route': '/iuran',
                     },
                     {
                       'title': 'DONASI',
                       'image': 'assets/image/donasi.png',
-                      'route': '/layanan',
+                      'route': '/donasi',
                     },
                     {
                       'title': 'PROFIL',
                       'image': 'assets/image/profil.png',
-                      'route': '/info',
+                      'route': '/profil',
                     },
                     {
-                      'title': 'Kontak',
+                      'title': 'AGENDA',
                       'image': 'assets/image/agenda.png',
-                      'route': '/kontak',
+                      'route': '/agenda',
                     },
                     {
                       'title': 'LAPORAN',
                       'image': 'assets/image/laporan.png',
-                      'route': '/lainnya',
+                      'route': '/laporan',
                     },
                   ];
 
@@ -196,111 +204,125 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
             ),
 
             //Informasi Terkini
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                'Informasi Terkini',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2E294A),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 180,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: beritaList.length,
-                itemBuilder: (context, index) {
-                  final berita = beritaList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/detail-berita',
-                        arguments: berita,
-                      );
-                    },
-                    child: Container(
-                      width: 200,
-                      margin: const EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          )
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 8,
-                              left: 8,
-                              right: 8,
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: CachedNetworkImage(
-                                imageUrl: '${Env.fileUrl}/${berita.foto}',
-                                width: double.infinity,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => Container(
-                                  height: 100,
-                                  color: Colors.grey[200],
-                                  child: const Center(
-                                      child: CircularProgressIndicator(
-                                          strokeWidth: 2)),
-                                ),
-                                errorWidget: (context, url, error) => Container(
-                                  height: 100,
-                                  color: Colors.grey[300],
-                                  child: const Icon(Icons.broken_image),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                right: 8.0, left: 8.0, top: 8.0),
-                            child: Text(
-                              berita.judul,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: Color(0xFF2E294A),
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              berita.created_at_formatted,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                        ],
-                      ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Informasi Terkini',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2E294A),
                     ),
-                  );
-                },
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.refresh, color: Colors.black),
+                    onPressed: _loadBerita,
+                  ),
+                ],
               ),
             ),
+
+            isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SizedBox(
+                    height: 180,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: beritaList.length,
+                      itemBuilder: (context, index) {
+                        final berita = beritaList[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/detail-berita',
+                              arguments: berita,
+                            );
+                          },
+                          child: Container(
+                            width: 200,
+                            margin: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                )
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 8,
+                                    left: 8,
+                                    right: 8,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: CachedNetworkImage(
+                                      imageUrl: '${Env.fileUrl}/${berita.foto}',
+                                      width: double.infinity,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Container(
+                                        height: 100,
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                            child: CircularProgressIndicator(
+                                                strokeWidth: 2)),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                        height: 100,
+                                        color: Colors.grey[300],
+                                        child: const Icon(Icons.broken_image),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8.0, left: 8.0, top: 8.0),
+                                  child: Text(
+                                    berita.judul,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: Color(0xFF2E294A),
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    berita.created_at_formatted,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

@@ -8,13 +8,13 @@ import 'package:concept/editproduct.dart';
 import 'package:concept/page/informasi/berita/detail_berita.dart';
 import 'package:concept/core/models/berita_model.dart';
 import 'package:concept/page/informasi/informasi.dart';
+import 'package:concept/page/laporan/laporan.dart';
 // import 'package:concept/page/keuangan/iuran_page.dart';
 // import 'package:concept/page/surat/surat_page.dart';
 // import 'package:concept/page/kegiatan/kegiatan_page.dart';
 // import 'package:concept/page/layanan/donasi_page.dart';
 // import 'package:concept/page/profile/profile_page.dart';
 // import 'package:concept/page/kontak/kontak_page.dart';
-// import 'package:concept/page/laporan/laporan_page.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
@@ -23,6 +23,7 @@ class AppRoutes {
     '/signup': (context) => SignupPage(),
     '/home': (context) => HomePage(),
     '/informasi': (context) => const InformasiPage(),
+    '/laporan': (context) => const LaporanPage(),
     // '/iuran': (context) => const IuranPage(),
     // '/berita': (context) => const SuratPage(),
     // '/kegiatan': (context) => const KegiatanPage(),
