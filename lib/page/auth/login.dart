@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kedai/core/services/auth_service.dart';
+import 'package:concept/core/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override

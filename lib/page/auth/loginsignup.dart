@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kedai/page/auth/login.dart';
+import 'package:concept/page/auth/login.dart';
 
 class LoginPageSign extends StatelessWidget {
   const LoginPageSign({Key? key}) : super(key: key);
@@ -10,10 +10,11 @@ class LoginPageSign extends StatelessWidget {
       children: [
         // Background
         Container(
-        // Mengatur background image
+          // Mengatur background image
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/image/background.png'), // Ganti dengan path gambar Anda
+              image: AssetImage(
+                  'assets/image/background.png'), // Ganti dengan path gambar Anda
               fit: BoxFit.cover, // Menyesuaikan gambar ke seluruh layar
             ),
           ),
@@ -60,11 +61,13 @@ class LoginPageSign extends StatelessWidget {
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 7),
                         ),
-
                         onPressed: () {
                           Navigator.of(context).push(PageRouteBuilder(
-                            pageBuilder: (context, animation, secondaryAnimation) => LoginPage(),
-                            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    LoginPage(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
@@ -72,7 +75,6 @@ class LoginPageSign extends StatelessWidget {
                             },
                           ));
                         },
-
                         child: const Text(
                           'Log In',
                           style: TextStyle(

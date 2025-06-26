@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
-import 'package:kedai/page/home/home.dart';
-import 'package:kedai/page/home/cart.dart';
-import 'package:kedai/page/home/favorite.dart';
-import 'package:kedai/page/home/profile.dart';
+import 'package:concept/page/home/home.dart';
+import 'package:concept/page/home/cart.dart';
+import 'package:concept/page/home/favorite.dart';
+import 'package:concept/page/home/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.title});

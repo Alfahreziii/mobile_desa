@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kedai/core/models/rapat_model.dart';
+import 'package:concept/core/models/rapat_model.dart';
 
 class RapatCard extends StatelessWidget {
   final Rapat rapat;

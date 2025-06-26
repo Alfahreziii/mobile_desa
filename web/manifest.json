@@ -1,6 +1,6 @@
 {
-    "name": "kedai",
-    "short_name": "kedai",
+    "name": "concept",
+    "short_name": "concept",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

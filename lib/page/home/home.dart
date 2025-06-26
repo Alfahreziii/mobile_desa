@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:kedai/core/models/berita_model.dart';
-import 'package:kedai/core/services/berita_service.dart';
+import 'package:concept/core/models/berita_model.dart';
+import 'package:concept/core/services/berita_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:kedai/config/env.dart';
+import 'package:concept/config/env.dart';
 
 class HomeMain extends StatefulWidget {
   const HomeMain({super.key, this.title});
@@ -17,29 +17,6 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   String userName = '';
 
   List<Berita> beritaList = [];
-
-  String formatTanggal(String isoDate) {
-    final date = DateTime.tryParse(isoDate);
-    if (date == null) return '-';
-
-    const bulan = [
-      '',
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember'
-    ];
-
-    return "${date.day} ${bulan[date.month]} ${date.year}";
-  }
 
   void _loadBerita() async {
     try {
@@ -309,7 +286,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              formatTanggal(berita.created_at_formatted),
+                              berita.created_at_formatted,
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,

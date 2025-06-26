@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:kedai/core/models/tahlil_model.dart';
-import 'package:kedai/config/env.dart';
+import 'package:concept/core/models/tahlil_model.dart';
+import 'package:concept/config/env.dart';
 
 class TahlilService {
   static Future<List<Tahlil>> fetchTahlil() async {

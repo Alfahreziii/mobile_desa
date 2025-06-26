@@ -6,7 +6,7 @@
 
     <application
         android:usesCleartextTraffic="true"
-        android:label="kedai"
+        android:label="concept"
         android:name="${applicationName}"
         android:icon="@mipmap/logo_image">
         <activity

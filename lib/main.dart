@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:kedai/config/routes.dart';
-import 'package:kedai/core/services/shared_prefs_service.dart';
+import 'package:concept/config/routes.dart';
+import 'package:concept/core/services/shared_prefs_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Kedai',
+      title: 'concept',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Merriweather',

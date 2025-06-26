@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'package:kedai/core/services/berita_service.dart';
-import 'package:kedai/core/services/kerjabakti_service.dart';
-import 'package:kedai/core/services/rapat_service.dart';
-import 'package:kedai/core/services/pengajian_service.dart';
-import 'package:kedai/core/services/tahlil_service.dart';
+import 'package:concept/core/services/berita_service.dart';
+import 'package:concept/core/services/kerjabakti_service.dart';
+import 'package:concept/core/services/rapat_service.dart';
+import 'package:concept/core/services/pengajian_service.dart';
+import 'package:concept/core/services/tahlil_service.dart';
 
-import 'package:kedai/core/models/kerjabakti_model.dart';
-import 'package:kedai/core/models/berita_model.dart';
-import 'package:kedai/core/models/rapat_model.dart';
-import 'package:kedai/core/models/pengajian_model.dart';
-import 'package:kedai/core/models/tahlil_model.dart';
+import 'package:concept/core/models/kerjabakti_model.dart';
+import 'package:concept/core/models/berita_model.dart';
+import 'package:concept/core/models/rapat_model.dart';
+import 'package:concept/core/models/pengajian_model.dart';
+import 'package:concept/core/models/tahlil_model.dart';
 
-import 'package:kedai/widgets/card/berita_card.dart';
-import 'package:kedai/widgets/card/kerjabakti_card.dart';
-import 'package:kedai/widgets/card/rapat_card.dart';
-import 'package:kedai/widgets/card/pengajian_card.dart';
-import 'package:kedai/widgets/card/tahlil_card.dart';
+import 'package:concept/widgets/card/berita_card.dart';
+import 'package:concept/widgets/card/kerjabakti_card.dart';
+import 'package:concept/widgets/card/rapat_card.dart';
+import 'package:concept/widgets/card/pengajian_card.dart';
+import 'package:concept/widgets/card/tahlil_card.dart';
 
 class InformasiPage extends StatefulWidget {
   const InformasiPage({super.key, this.title});
@@ -140,7 +140,7 @@ class _InformasiPageState extends State<InformasiPage>
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
                 indicator: const BoxDecoration(
-                  color: Color(0xFF02046B),
+                  color: Color(0xFF1E5993),
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 unselectedLabelColor: const Color(0xFF2E294A),

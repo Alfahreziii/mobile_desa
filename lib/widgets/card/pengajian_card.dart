@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kedai/core/models/pengajian_model.dart';
+import 'package:concept/core/models/pengajian_model.dart';
 
 class PengajianCard extends StatelessWidget {
   final Pengajian pengajian;

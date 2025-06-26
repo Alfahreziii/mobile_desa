@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kedai/core/models/berita_model.dart';
-import 'package:kedai/config/env.dart';
+import 'package:concept/core/models/berita_model.dart';
+import 'package:concept/config/env.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class DetailBeritaPage extends StatelessWidget {

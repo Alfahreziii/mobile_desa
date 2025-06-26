@@ -1,4 +1,4 @@
-package com.example.kedai
+package com.example.concept
 
 import io.flutter.embedding.android.FlutterActivity
 

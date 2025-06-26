@@ -1,20 +1,20 @@
 // lib/config/routes.dart
 import 'package:flutter/material.dart';
-import 'package:kedai/page/auth/login.dart';
-import 'package:kedai/page/home/homepages.dart';
-import 'package:kedai/page/auth/loginsignup.dart';
-import 'package:kedai/page/auth/signup.dart';
-import 'package:kedai/editproduct.dart';
-import 'package:kedai/page/informasi/berita/detail_berita.dart';
-import 'package:kedai/core/models/berita_model.dart';
-import 'package:kedai/page/informasi/informasi.dart';
-// import 'package:kedai/page/keuangan/iuran_page.dart';
-// import 'package:kedai/page/surat/surat_page.dart';
-// import 'package:kedai/page/kegiatan/kegiatan_page.dart';
-// import 'package:kedai/page/layanan/donasi_page.dart';
-// import 'package:kedai/page/profile/profile_page.dart';
-// import 'package:kedai/page/kontak/kontak_page.dart';
-// import 'package:kedai/page/laporan/laporan_page.dart';
+import 'package:concept/page/auth/login.dart';
+import 'package:concept/page/home/homepages.dart';
+import 'package:concept/page/auth/loginsignup.dart';
+import 'package:concept/page/auth/signup.dart';
+import 'package:concept/editproduct.dart';
+import 'package:concept/page/informasi/berita/detail_berita.dart';
+import 'package:concept/core/models/berita_model.dart';
+import 'package:concept/page/informasi/informasi.dart';
+// import 'package:concept/page/keuangan/iuran_page.dart';
+// import 'package:concept/page/surat/surat_page.dart';
+// import 'package:concept/page/kegiatan/kegiatan_page.dart';
+// import 'package:concept/page/layanan/donasi_page.dart';
+// import 'package:concept/page/profile/profile_page.dart';
+// import 'package:concept/page/kontak/kontak_page.dart';
+// import 'package:concept/page/laporan/laporan_page.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
