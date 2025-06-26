@@ -309,7 +309,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              formatTanggal(berita.created_at),
+                              formatTanggal(berita.created_at_formatted),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,

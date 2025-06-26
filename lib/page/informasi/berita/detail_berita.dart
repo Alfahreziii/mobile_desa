@@ -1,34 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kedai/core/models/berita_model.dart';
 import 'package:kedai/config/env.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DetailBeritaPage extends StatelessWidget {
   final Berita berita;
 
   const DetailBeritaPage({super.key, required this.berita});
-
-  String formatTanggal(String isoDate) {
-    final date = DateTime.tryParse(isoDate);
-    if (date == null) return '-';
-
-    const bulan = [
-      '',
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember'
-    ];
-
-    return "${date.day} ${bulan[date.month]} ${date.year}";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +49,7 @@ class DetailBeritaPage extends StatelessWidget {
 
               // Tanggal
               Text(
-                formatTanggal(berita.created_at),
+                berita.created_at_formatted,
                 style: const TextStyle(
                   fontSize: 13,
                   color: Colors.grey,
@@ -81,18 +59,22 @@ class DetailBeritaPage extends StatelessWidget {
 
               // Gambar
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  '${Env.fileUrl}/${berita.foto}',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    height: 200,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.broken_image, size: 50),
-                  ),
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(8),
+                  child: CachedNetworkImage(
+                    imageUrl: '${Env.fileUrl}/${berita.foto}',
+                    placeholder: (context, url) => Container(
+                      height: 200,
+                      alignment: Alignment.center,
+                      child: const CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.broken_image, size: 50),
+                    ),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  )),
               const SizedBox(height: 16),
 
               // Deskripsi

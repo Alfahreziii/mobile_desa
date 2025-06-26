@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:kedai/core/models/berita_model.dart';
+import 'package:kedai/core/models/rapat_model.dart';
 import 'package:kedai/config/env.dart';
 
-class BeritaService {
-  static Future<List<Berita>> fetchBerita() async {
+class RapatService {
+  static Future<List<Rapat>> fetchRapat() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
 
@@ -14,7 +14,7 @@ class BeritaService {
     }
 
     final response = await http.get(
-      Uri.parse('${Env.baseUrl}/berita'),
+      Uri.parse('${Env.baseUrl}/rapat'),
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
@@ -24,11 +24,11 @@ class BeritaService {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final List list = jsonData['data'];
-      return list.map((json) => Berita.fromJson(json)).toList();
+      return list.map((json) => Rapat.fromJson(json)).toList();
     } else {
       print('Status: ${response.statusCode}');
       print('Response: ${response.body}');
-      throw Exception('Gagal mengambil data berita');
+      throw Exception('Gagal mengambil data Rapat');
     }
   }
 }

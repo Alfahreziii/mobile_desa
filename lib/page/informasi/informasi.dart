@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:kedai/core/services/berita_service.dart';
+import 'package:kedai/core/services/kerjabakti_service.dart';
+import 'package:kedai/core/services/rapat_service.dart';
+import 'package:kedai/core/services/pengajian_service.dart';
+import 'package:kedai/core/services/tahlil_service.dart';
+
+import 'package:kedai/core/models/kerjabakti_model.dart';
+import 'package:kedai/core/models/berita_model.dart';
+import 'package:kedai/core/models/rapat_model.dart';
+import 'package:kedai/core/models/pengajian_model.dart';
+import 'package:kedai/core/models/tahlil_model.dart';
+
+import 'package:kedai/widgets/card/berita_card.dart';
+import 'package:kedai/widgets/card/kerjabakti_card.dart';
+import 'package:kedai/widgets/card/rapat_card.dart';
+import 'package:kedai/widgets/card/pengajian_card.dart';
+import 'package:kedai/widgets/card/tahlil_card.dart';
 
 class InformasiPage extends StatefulWidget {
   const InformasiPage({super.key, this.title});
@@ -16,7 +31,12 @@ class _InformasiPageState extends State<InformasiPage>
   late TabController _tabController;
   String selectedCategory = "Berita";
   String searchQuery = "";
-  List<ProductCard> allProducts = [];
+
+  List<Berita> beritaList = [];
+  List<Rapat> rapatList = [];
+  List<KerjaBakti> kerjabaktiList = [];
+  List<Pengajian> pengajianList = [];
+  List<Tahlil> tahlilList = [];
 
   @override
   void initState() {
@@ -44,60 +64,24 @@ class _InformasiPageState extends State<InformasiPage>
   }
 
   Future<void> fetchDataByCategory() async {
-    String endpoint = "";
-
-    switch (selectedCategory) {
-      case "Berita":
-        endpoint = 'http://10.0.2.2:8000/berita';
-        break;
-      case "Rapat":
-        endpoint = 'http://10.0.2.2:8000/rapat';
-        break;
-      case "Kerja Bakti":
-        endpoint = 'http://10.0.2.2:8000/kerjabakti';
-        break;
-      case "Pengajian":
-        endpoint = 'http://10.0.2.2:8000/pengajian';
-        break;
-      case "Tahlil":
-        endpoint = 'http://10.0.2.2:8000/tahlil';
-        break;
-    }
-
     try {
-      final response = await http.get(Uri.parse(endpoint));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<ProductCard> products = [];
-
-        if (selectedCategory == "Berita") {
-          products = (data['berita'] as List)
-              .map((item) => ProductCard(
-                    imageAssetPath: item['foto'] ?? '',
-                    title: item['judul'] ?? '',
-                    description: item['deskripsi'] ?? '',
-                    category: 'Berita',
-                    price: '0',
-                  ))
-              .toList();
-        } else if (selectedCategory == "Rapat") {
-          products = (data['rapat'] as List)
-              .map((item) => ProductCard(
-                    imageAssetPath: '',
-                    title: item['hari'] ?? '',
-                    description:
-                        '${item['bahasan'] ?? ''} (${item['jam_mulai']} - ${item['jam_selesai']})',
-                    category: 'Rapat',
-                    price: '0',
-                  ))
-              .toList();
-        }
-        // Tambah kategori lain sesuai struktur data
-
-        setState(() {
-          allProducts = products;
-        });
+      if (selectedCategory == "Berita") {
+        final berita = await BeritaService.fetchBerita();
+        setState(() => beritaList = berita);
+      } else if (selectedCategory == "Rapat") {
+        final rapat = await RapatService.fetchRapat();
+        setState(() => rapatList = rapat);
+      } else if (selectedCategory == "Kerja Bakti") {
+        final kerjabakti = await KerjabaktiService.fetchKerjaBakti();
+        setState(() => kerjabaktiList = kerjabakti);
+      } else if (selectedCategory == "Pengajian") {
+        final pengajian = await PengajianService.fetchPengajian();
+        setState(() => pengajianList = pengajian);
+      } else if (selectedCategory == "Tahlil") {
+        final tahlil = await TahlilService.fetchTahlil();
+        setState(() => tahlilList = tahlil);
       }
+      // Tambahkan fetchData untuk kategori lain
     } catch (e) {
       print('Error: $e');
     }
@@ -111,13 +95,6 @@ class _InformasiPageState extends State<InformasiPage>
 
   @override
   Widget build(BuildContext context) {
-    final filteredProducts = allProducts.where((product) {
-      final lowerCaseQuery = searchQuery.toLowerCase();
-      final matchesSearchQuery =
-          product.title.toLowerCase().contains(lowerCaseQuery);
-      return matchesSearchQuery;
-    }).toList();
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
@@ -138,11 +115,7 @@ class _InformasiPageState extends State<InformasiPage>
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
+              onChanged: (value) => setState(() => searchQuery = value),
               decoration: InputDecoration(
                 hintText: "Search",
                 prefixIcon: Icon(Icons.search),
@@ -155,94 +128,122 @@ class _InformasiPageState extends State<InformasiPage>
               ),
             ),
           ),
-// Tab Bar
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              labelPadding:
-                  const EdgeInsets.symmetric(horizontal: 12), // jarak antar tab
-              indicatorSize: TabBarIndicatorSize.tab,
-              dividerColor: Colors.transparent,
-              labelColor: Colors.white,
-              indicator: const BoxDecoration(
-                color: Color(0xFF02046B),
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+            padding: const EdgeInsets.only(left: 16, right: 16.0, top: 10.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: TabBar(
+                controller: _tabController,
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                labelColor: Colors.white,
+                indicator: const BoxDecoration(
+                  color: Color(0xFF02046B),
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                ),
+                unselectedLabelColor: const Color(0xFF2E294A),
+                labelStyle: const TextStyle(fontSize: 16),
+                labelPadding:
+                    EdgeInsets.symmetric(horizontal: 16), // KUNCI UTAMA DI SINI
+                tabs: const [
+                  Tab(text: "Berita"),
+                  Tab(text: "Rapat"),
+                  Tab(text: "Kerja Bakti"),
+                  Tab(text: "Pengajian"),
+                  Tab(text: "Tahlil"),
+                ],
               ),
-              unselectedLabelColor: const Color(0xFF2E294A),
-              labelStyle: const TextStyle(
-                fontSize: 16,
-              ),
-              tabs: const [
-                Tab(text: "Berita"),
-                Tab(text: "Rapat"),
-                Tab(text: "Kerja Bakti"),
-                Tab(text: "Pengajian"),
-                Tab(text: "Tahlil"),
-              ],
             ),
           ),
-
           Expanded(
             child: RefreshIndicator(
               onRefresh: fetchDataByCategory,
-              child: ListView(
-                children: filteredProducts.isEmpty
-                    ? [
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text("Tidak ada data."),
-                          ),
-                        )
-                      ]
-                    : filteredProducts,
+              child: Builder(
+                builder: (_) {
+                  if (selectedCategory == "Berita") {
+                    final filtered = beritaList
+                        .where((b) => b.judul
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase()))
+                        .toList();
+                    return GridView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 6,
+                        mainAxisSpacing: 6,
+                        childAspectRatio: 0.98,
+                      ),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) => BeritaCard(
+                        berita: filtered[index],
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/detail-berita',
+                            arguments: beritaList[index],
+                          );
+                        },
+                      ),
+                    );
+                  } else if (selectedCategory == "Rapat") {
+                    final filtered = rapatList
+                        .where((r) => r.bahasan
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase()))
+                        .toList();
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) =>
+                          RapatCard(rapat: filtered[index]),
+                    );
+                  } else if (selectedCategory == "Kerja Bakti") {
+                    final filtered = kerjabaktiList
+                        .where((r) => r.tempat
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase()))
+                        .toList();
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) =>
+                          KerjaBaktiCard(kerjabakti: filtered[index]),
+                    );
+                  } else if (selectedCategory == "Pengajian") {
+                    final filtered = pengajianList
+                        .where((r) => r.judul
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase()))
+                        .toList();
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) =>
+                          PengajianCard(pengajian: filtered[index]),
+                    );
+                  } else if (selectedCategory == "Tahlil") {
+                    final filtered = tahlilList
+                        .where((r) => r.judul
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase()))
+                        .toList();
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) =>
+                          TahlilCard(tahlil: filtered[index]),
+                    );
+                  }
+                  return const Center(child: Text("Tidak ada data."));
+                },
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ProductCard extends StatelessWidget {
-  final String imageAssetPath;
-  final String title;
-  final String description;
-  final String category;
-  final String price;
-
-  const ProductCard({
-    super.key,
-    required this.imageAssetPath,
-    required this.title,
-    required this.description,
-    required this.category,
-    required this.price,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (imageAssetPath.isNotEmpty)
-              CachedNetworkImage(
-                imageUrl: 'http://10.0.2.2:8000/products/$imageAssetPath',
-                height: 150,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(description),
-          ],
-        ),
       ),
     );
   }
