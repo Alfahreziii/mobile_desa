@@ -9,12 +9,13 @@ import 'package:concept/page/informasi/berita/detail_berita.dart';
 import 'package:concept/core/models/berita_model.dart';
 import 'package:concept/page/informasi/informasi.dart';
 import 'package:concept/page/laporan/laporan.dart';
-// import 'package:concept/page/keuangan/iuran_page.dart';
-// import 'package:concept/page/surat/surat_page.dart';
-// import 'package:concept/page/kegiatan/kegiatan_page.dart';
-// import 'package:concept/page/layanan/donasi_page.dart';
-// import 'package:concept/page/profile/profile_page.dart';
-// import 'package:concept/page/kontak/kontak_page.dart';
+import 'package:concept/page/surat/surat.dart';
+import 'package:concept/page/profil/profil.dart';
+import 'package:concept/page/profil/pengurus.dart';
+import 'package:concept/page/profil/geografis.dart';
+import 'package:concept/page/aduan/aduan.dart';
+import 'package:concept/page/home/profile/edit.dart';
+import 'package:concept/page/home/profile/emailpassword.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
@@ -24,13 +25,12 @@ class AppRoutes {
     '/home': (context) => HomePage(),
     '/informasi': (context) => const InformasiPage(),
     '/laporan': (context) => const LaporanPage(),
+    '/surat': (context) => const SuratPage(),
+    '/profil': (context) => const ProfilPage(),
+    '/pengurus': (context) => const PengurusPage(),
+    '/geografis': (context) => const GeografisPage(),
+    '/aduan': (context) => AduanPage(),
     // '/iuran': (context) => const IuranPage(),
-    // '/berita': (context) => const SuratPage(),
-    // '/kegiatan': (context) => const KegiatanPage(),
-    // '/layanan': (context) => const DonasiPage(),
-    // '/info': (context) => const ProfilePage(),
-    // '/kontak': (context) => const KontakPage(),
-    // '/lainnya': (context) => const LaporanPage(),
   };
 
   static Route<dynamic>? onGenerateRoute(
@@ -53,6 +53,31 @@ class AppRoutes {
         );
       } catch (e) {
         print("Error: $e");
+        return null;
+      }
+    }
+
+    if (settings.name == '/editprofile') {
+      try {
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => EditProfilePage(currentUser: args['currentUser']),
+        );
+      } catch (e) {
+        print("Error saat parsing argumen edit profile: $e");
+        return null;
+      }
+    }
+    if (settings.name == '/emailpassword') {
+      try {
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => EmailPasswordPage(
+            currentUser: args['currentUser'],
+          ),
+        );
+      } catch (e) {
+        print("Error parsing args untuk emailpassword: $e");
         return null;
       }
     }

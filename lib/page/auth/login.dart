@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.white,
                 border: Border(
                   top: BorderSide(color: Color(0xFF02046B), width: 34.03),
-                  bottom: BorderSide(color: Color(0xFFFB0711), width: 9.08),
+                  bottom: BorderSide(color: Color(0xFF1E5993), width: 9.08),
                 ),
               ),
             ),
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 50),
                   // Logo
                   Center(
                     child: Image.asset(
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFFB0711)),
+                        borderSide: BorderSide(color: Color(0xFF1E5993)),
                       ),
                     ),
                   ),
@@ -168,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFFB0711)),
+                        borderSide: BorderSide(color: Color(0xFF1E5993)),
                       ),
                     ),
                   ),
@@ -180,7 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFFB0711),
+                              backgroundColor: Color(0xFF1E5993),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -216,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           ' Sign up',
                           style: TextStyle(
-                            color: Color(0xFFFB0711),
+                            color: Color(0xFF1E5993),
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),

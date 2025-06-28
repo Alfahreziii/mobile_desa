@@ -28,7 +28,7 @@ class LoginPageSign extends StatelessWidget {
               color: Colors.white,
               border: Border(
                 top: BorderSide(color: Color(0xFF02046B), width: 34.03),
-                bottom: BorderSide(color: Color(0xFFFB0711), width: 9.08),
+                bottom: BorderSide(color: Color(0xFF1E5993), width: 9.08),
               ),
             ),
           ),
@@ -55,7 +55,7 @@ class LoginPageSign extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFB0711),
+                          backgroundColor: Color(0xFF1E5993),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

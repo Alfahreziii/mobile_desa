@@ -119,12 +119,12 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: GridView.count(
-                crossAxisCount: 4,
+                crossAxisCount: 3,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
-                children: List.generate(8, (index) {
+                children: List.generate(6, (index) {
                   final List<Map<String, dynamic>> menuItems = [
                     {
                       'title': 'INFORMASI',
@@ -147,19 +147,9 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                       'route': '/iuran',
                     },
                     {
-                      'title': 'DONASI',
-                      'image': 'assets/image/donasi.png',
-                      'route': '/donasi',
-                    },
-                    {
                       'title': 'PROFIL',
                       'image': 'assets/image/profil.png',
                       'route': '/profil',
-                    },
-                    {
-                      'title': 'AGENDA',
-                      'image': 'assets/image/agenda.png',
-                      'route': '/agenda',
                     },
                     {
                       'title': 'LAPORAN',

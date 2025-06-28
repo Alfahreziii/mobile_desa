@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:concept/core/services/shared_prefs_service.dart';
+import 'package:concept/core/services/user_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,14 +15,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userEmail = '';
 
   void _loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('userName');
-    String? email = prefs.getString('userEmail');
+    // Ambil data terbaru dari API
+    final updatedUser = await UserService.getCurrentUser();
 
-    setState(() {
-      userName = username ?? 'No Name';
-      userEmail = email ?? 'No Email';
-    });
+    if (updatedUser != null) {
+      // Simpan ke SharedPreferences
+      await SharedPrefsService.saveUser(updatedUser);
+
+      setState(() {
+        userName = updatedUser.name;
+        userEmail = updatedUser.email;
+      });
+    } else {
+      // fallback: pakai data lama dari SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? username = prefs.getString('userName');
+      String? email = prefs.getString('userEmail');
+
+      setState(() {
+        userName = username ?? 'No Name';
+        userEmail = email ?? 'No Email';
+      });
+    }
   }
 
   @override
@@ -30,10 +46,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _logout(BuildContext context) async {
+    await SharedPrefsService.clearUser(); // ✅ Tambahkan ini
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('isLoggedIn'); // Hapus data login dari SharedPreferences
-    await prefs.clear();
-    // Navigasikan ke halaman login setelah logout
+    await prefs.remove('isLoggedIn'); // Atau bisa langsung prefs.clear();
+
     Navigator.pushReplacementNamed(context, '/login');
   }
 
@@ -116,53 +133,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                  const ListTile(
-                    leading: Icon(
+                  ListTile(
+                    leading: const Icon(
                       Icons.person,
                       color: Color(0xFF2E294A),
                     ),
-                    title: Text(
-                      'Personal Information,',
+                    title: const Text(
+                      'Personal Information',
                       style: TextStyle(
                         color: Color(0xFF2E294A),
                       ),
                     ),
-                    trailing: Icon(
+                    trailing: const Icon(
                       Icons.arrow_forward_ios,
                       color: Color(0xFF2E294A),
                     ),
+                    onTap: () async {
+                      final user = await SharedPrefsService.getUser();
+
+                      final result = await Navigator.pushNamed(
+                        context,
+                        '/editprofile',
+                        arguments: {'currentUser': user},
+                      );
+
+                      if (result == true) {
+                        _loadUserData(); // muat ulang saat kembali
+                      }
+                    },
                   ),
-                  const ListTile(
-                    leading: Icon(
+                  ListTile(
+                    leading: const Icon(
                       Icons.lock,
                       color: Color(0xFF2E294A),
                     ),
-                    title: Text(
-                      'Password & Security',
+                    title: const Text(
+                      'Password & Email',
                       style: TextStyle(
                         color: Color(0xFF2E294A),
                       ),
                     ),
-                    trailing: Icon(
+                    trailing: const Icon(
                       Icons.arrow_forward_ios,
                       color: Color(0xFF2E294A),
                     ),
-                  ),
-                  const ListTile(
-                    leading: Icon(
-                      Icons.payment,
-                      color: Color(0xFF2E294A),
-                    ),
-                    title: Text(
-                      'Payment Method',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
+                    onTap: () async {
+                      final user = await SharedPrefsService.getUser();
+                      Navigator.pushNamed(
+                        context,
+                        '/emailpassword',
+                        arguments: {
+                          'currentUser':
+                              user, // Lempar data user yang sedang login
+                        },
+                      );
+                    },
                   ),
                   const ListTile(
                     title: Text(
@@ -172,78 +197,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 16,
                       ),
                     ),
-                  ),
-                  const ListTile(
-                    leading: Icon(
-                      Icons.help,
-                      color: Color(0xFF2E294A),
-                    ),
-                    title: Text(
-                      'Help Center',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                  ),
-                  const ListTile(
-                    leading: Icon(
-                      Icons.star,
-                      color: Color(0xFF2E294A),
-                    ),
-                    title: Text(
-                      'Rate Us',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.add,
-                      color: Color(0xFF2E294A),
-                    ),
-                    title: const Text(
-                      'Add Product',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, '/addproduct'); // Panggil fungsi logout
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.edit,
-                      color: Color(0xFF2E294A),
-                    ),
-                    title: const Text(
-                      'Edit Product',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
-                    ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, '/updateproduct'); // Panggil fungsi logout
-                    },
                   ),
                   ListTile(
                     leading: const Icon(

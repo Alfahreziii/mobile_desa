@@ -52,11 +52,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         controller: _motionTabBarController,
         initialSelectedTab: "Home",
         useSafeArea: true,
-        labels: const ["Home", "Cart", "Favorite", "Profile"],
+        labels: const ["Home", "Market", "Invoice", "Profile"],
         icons: const [
           Icons.home,
           Icons.shopping_cart,
-          Icons.favorite,
+          Icons.receipt_long,
           Icons.people_alt
         ],
         tabSize: 50,
