@@ -16,6 +16,7 @@ import 'package:concept/page/profil/geografis.dart';
 import 'package:concept/page/aduan/aduan.dart';
 import 'package:concept/page/home/profile/edit.dart';
 import 'package:concept/page/home/profile/emailpassword.dart';
+import 'package:concept/page/iuran/iuran.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
@@ -30,7 +31,7 @@ class AppRoutes {
     '/pengurus': (context) => const PengurusPage(),
     '/geografis': (context) => const GeografisPage(),
     '/aduan': (context) => AduanPage(),
-    // '/iuran': (context) => const IuranPage(),
+    '/iuran': (context) => const IuranPage(),
   };
 
   static Route<dynamic>? onGenerateRoute(

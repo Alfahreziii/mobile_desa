@@ -140,7 +140,7 @@ class _InformasiPageState extends State<InformasiPage>
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
                 indicator: const BoxDecoration(
-                  color: Color(0xFF1E5993),
+                  color: Color(0xFF6EAA24),
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 unselectedLabelColor: const Color(0xFF2E294A),

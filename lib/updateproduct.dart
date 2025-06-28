@@ -11,17 +11,18 @@ class updateProduct extends StatefulWidget {
   _updateProductState createState() => _updateProductState();
 }
 
-class _updateProductState extends State<updateProduct> with TickerProviderStateMixin {
+class _updateProductState extends State<updateProduct>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   String selectedCategory = "All";
   String searchQuery = ""; // Variabel untuk menyimpan query pencarian
   List<ProductCard> allProducts = []; // List untuk menyimpan data produk
 
-      @override
+  @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    
+
     _tabController.addListener(() {
       setState(() {
         selectedCategory = _tabController.index == 0
@@ -37,9 +38,11 @@ class _updateProductState extends State<updateProduct> with TickerProviderStateM
     });
     fetchProducts(); // Memanggil fungsi untuk mengambil data produk
   }
-    Future<void> fetchProducts() async {
+
+  Future<void> fetchProducts() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:8000/product')); // Ganti dengan URL API Anda
+      final response = await http.get(Uri.parse(
+          'http://10.0.2.2:8000/product')); // Ganti dengan URL API Anda
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -57,8 +60,8 @@ class _updateProductState extends State<updateProduct> with TickerProviderStateM
       print('Error: $e');
     }
   }
-  
-   Future<void> deleteProduct(String productId) async {
+
+  Future<void> deleteProduct(String productId) async {
     try {
       final response = await http.delete(
         Uri.parse('http://10.0.2.2:8000/delete_product/$productId'),
@@ -76,7 +79,6 @@ class _updateProductState extends State<updateProduct> with TickerProviderStateM
     }
   }
 
-
   @override
   void dispose() {
     _tabController.dispose();
@@ -85,32 +87,34 @@ class _updateProductState extends State<updateProduct> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-
     final filteredProducts = allProducts.where((product) {
       final lowerCaseQuery = searchQuery.toLowerCase();
-      final matchesSearchQuery = product.title.toLowerCase().contains(lowerCaseQuery);
-      final matchesCategory = selectedCategory == "All" || product.category == selectedCategory;
-      return matchesSearchQuery && matchesCategory; // Hanya produk yang cocok dengan kategori dan query
+      final matchesSearchQuery =
+          product.title.toLowerCase().contains(lowerCaseQuery);
+      final matchesCategory =
+          selectedCategory == "All" || product.category == selectedCategory;
+      return matchesSearchQuery &&
+          matchesCategory; // Hanya produk yang cocok dengan kategori dan query
     }).toList();
 
     return Scaffold(
-       backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF5F5F5),
       // Remove AppBar and replace it with a custom header
       body: Column(
         children: [
           // Tab Bar
           Align(
-                  alignment: Alignment.centerLeft,
-                  child: Transform.translate(
-                    offset: Offset(0, 25), // Ubah nilai x untuk menggeser ke kiri
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.black),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
+            alignment: Alignment.centerLeft,
+            child: Transform.translate(
+              offset: Offset(0, 25), // Ubah nilai x untuk menggeser ke kiri
+              child: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
           Container(
             height: 40,
@@ -121,45 +125,40 @@ class _updateProductState extends State<updateProduct> with TickerProviderStateM
               dividerColor: Colors.transparent,
               labelColor: Colors.white,
               indicator: const BoxDecoration(
-                color: Color(0xFF02046B),
+                color: Color(0xFF2D4F2B),
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
               unselectedLabelColor: const Color(0xFF2E294A),
               labelStyle: const TextStyle(
                 fontFamily: 'biasa1',
                 fontSize: 16,
-              ),     
+              ),
               tabs: const [
                 Tab(text: "All"),
                 Tab(text: "Food"),
                 Tab(text: "Drink"),
                 Tab(text: "Snacks"),
-            ],
+              ],
+            ),
           ),
-          ),
-          
 
           // ListView of products
           Expanded(
             child: RefreshIndicator(
               onRefresh: fetchProducts,
               child: ListView(
-              padding: const EdgeInsets.all(5),
-              children: filteredProducts.isEmpty
-                  ? [const Center(child: Text("No products found."))]
-                  : filteredProducts, // Tampilkan hasil filter dan pencarian
+                padding: const EdgeInsets.all(5),
+                children: filteredProducts.isEmpty
+                    ? [const Center(child: Text("No products found."))]
+                    : filteredProducts, // Tampilkan hasil filter dan pencarian
               ),
             ),
           ),
         ],
       ),
-
-
     );
   }
 }
-
-
 
 class ProductCard extends StatelessWidget {
   final String imageAssetPath;
@@ -181,29 +180,34 @@ class ProductCard extends StatelessWidget {
     required this.onDelete,
   });
 
-factory ProductCard.fromJson(Map<String, dynamic> json, Function(String) onDelete) {
-  return ProductCard(
-    imageAssetPath: json['image'],
-    title: json['title'],
-    description: json['description'],
-    category: json['category'],
-    price: json['price'],
-    id_product: json['id_product'],
-    onDelete: onDelete, // Pastikan fungsi ini dioper ke parameter
-  );
-}
+  factory ProductCard.fromJson(
+      Map<String, dynamic> json, Function(String) onDelete) {
+    return ProductCard(
+      imageAssetPath: json['image'],
+      title: json['title'],
+      description: json['description'],
+      category: json['category'],
+      price: json['price'],
+      id_product: json['id_product'],
+      onDelete: onDelete, // Pastikan fungsi ini dioper ke parameter
+    );
+  }
 
-
- @override
-Widget build(BuildContext context) {
-  return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8,), // Margin luar untuk card
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        vertical: 4,
+        horizontal: 8,
+      ), // Margin luar untuk card
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15), // Radius untuk sudut card
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2), // Warna bayangan dengan transparansi
-            offset: const Offset(0, 25), // Jarak bayangan (x: horizontal, y: vertikal)
+            color: Colors.black
+                .withOpacity(0.2), // Warna bayangan dengan transparansi
+            offset: const Offset(
+                0, 25), // Jarak bayangan (x: horizontal, y: vertikal)
             blurRadius: 30, // Seberapa buram bayangan
             spreadRadius: 0, // Seberapa jauh bayangan menyebar
           ),
@@ -246,7 +250,8 @@ Widget build(BuildContext context) {
                           onPressed: () {},
                           iconSize: 16, // Adjust this for the heart icon size
                           constraints: const BoxConstraints(),
-                          padding: EdgeInsets.zero, // Removes extra padding around the icon
+                          padding: EdgeInsets
+                              .zero, // Removes extra padding around the icon
                         ),
                       ),
                     ),
@@ -303,8 +308,9 @@ Widget build(BuildContext context) {
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF02046B),
-                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                            backgroundColor: const Color(0xFF2D4F2B),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 0),
                             minimumSize: const Size(50, 28),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
@@ -318,14 +324,15 @@ Widget build(BuildContext context) {
                                 context,
                                 '/editproduct',
                                 arguments: {
-                                  'productId': id_product, // Ganti dengan ID produk yang sesuai
+                                  'productId':
+                                      id_product, // Ganti dengan ID produk yang sesuai
                                   'productData': {
                                     'title': title,
                                     'description': description,
                                     'price': price,
                                     'category': category, // Tambahkan kategori
-                                    'image': imageAssetPath, // Tambahkan path gambar
-
+                                    'image':
+                                        imageAssetPath, // Tambahkan path gambar
                                   },
                                 },
                               );
@@ -338,57 +345,61 @@ Widget build(BuildContext context) {
                                 fontFamily: 'biasa1',
                               ),
                             ),
-                          ), 
+                          ),
                         ),
                         ElevatedButton(
-                              onPressed: () async {
-                                  final shouldDelete = await showDialog<bool>(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Delete Product'),
-                                      content: const Text('Are you sure you want to delete this product?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context, false),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context, true),
-                                          child: const Text('Delete'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-
-
-                                if (shouldDelete ?? false) {
-                                  onDelete(id_product); // Pastikan ini memanggil properti onDelete
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Product deleted successfully!')),
-                                  );
-                                }
-                              },
-
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                minimumSize: const Size(50, 28),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                elevation: 5,
-                                shadowColor: Colors.black,
+                          onPressed: () async {
+                            final shouldDelete = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Delete Product'),
+                                content: const Text(
+                                    'Are you sure you want to delete this product?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: const Text('Delete'),
+                                  ),
+                                ],
                               ),
-                              child: const Text(
-                                "Delete",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontFamily: 'biasa1',
-                                ),
-                              ),
+                            );
+
+                            if (shouldDelete ?? false) {
+                              onDelete(
+                                  id_product); // Pastikan ini memanggil properti onDelete
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('Product deleted successfully!')),
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            minimumSize: const Size(50, 28),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
                             ),
-
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                          ),
+                          child: const Text(
+                            "Delete",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontFamily: 'biasa1',
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],

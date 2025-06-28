@@ -103,7 +103,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     dialogBackgroundColor:
                         Colors.white, // ✅ Background datepicker jadi putih
                     colorScheme: ColorScheme.light(
-                      primary: Color(0xFF1E5993), // warna tombol/aksen
+                      primary: Color(0xFF6EAA24), // warna tombol/aksen
                       onPrimary: Colors.white,
                       onSurface: Colors.black,
                     ),
@@ -276,7 +276,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _submit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E5993),
+                    backgroundColor: const Color(0xFF6EAA24),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),

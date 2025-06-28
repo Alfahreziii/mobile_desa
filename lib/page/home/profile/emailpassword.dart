@@ -190,7 +190,7 @@ class _EmailPasswordPageState extends State<EmailPasswordPage> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
-                              color: Color(0xFF1E5993), width: 1.5),
+                              color: Color(0xFF6EAA24), width: 1.5),
                         ),
                       ),
                       onChanged: (val) => _user = _user.copyWith(email: val),
@@ -219,7 +219,7 @@ class _EmailPasswordPageState extends State<EmailPasswordPage> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: const BorderSide(
-                                color: Color(0xFF1E5993), width: 1.5),
+                                color: Color(0xFF6EAA24), width: 1.5),
                           ),
                         ),
                         onChanged: (val) =>
@@ -240,7 +240,7 @@ class _EmailPasswordPageState extends State<EmailPasswordPage> {
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _submit,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E5993),
+                  backgroundColor: const Color(0xFF6EAA24),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

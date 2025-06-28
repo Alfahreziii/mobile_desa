@@ -147,7 +147,7 @@ class _AduanPageState extends State<AduanPage> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide:
-                        const BorderSide(color: Color(0xFF1E5993), width: 1.5),
+                        const BorderSide(color: Color(0xFF6EAA24), width: 1.5),
                   ),
                 ),
               ),
@@ -175,7 +175,7 @@ class _AduanPageState extends State<AduanPage> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide:
-                        const BorderSide(color: Color(0xFF1E5993), width: 1.5),
+                        const BorderSide(color: Color(0xFF6EAA24), width: 1.5),
                   ),
                 ),
               ),
@@ -215,7 +215,7 @@ class _AduanPageState extends State<AduanPage> {
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _submitForm,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E5993),
+                    backgroundColor: const Color(0xFF6EAA24),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),

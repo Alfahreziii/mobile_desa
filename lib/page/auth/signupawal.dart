@@ -128,8 +128,8 @@ class _SignupPageState extends State<SignupPage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                  top: BorderSide(color: Color(0xFF02046B), width: 34.03),
-                  bottom: BorderSide(color: Color(0xFF1E5993), width: 9.08),
+                  top: BorderSide(color: Color(0xFF2D4F2B), width: 34.03),
+                  bottom: BorderSide(color: Color(0xFF6EAA24), width: 9.08),
                 ),
               ),
             ),
@@ -194,7 +194,7 @@ class _SignupPageState extends State<SignupPage> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF1E5993)),
+                        borderSide: BorderSide(color: Color(0xFF6EAA24)),
                       ),
                     ),
                   ),
@@ -213,7 +213,7 @@ class _SignupPageState extends State<SignupPage> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF1E5993)),
+                        borderSide: BorderSide(color: Color(0xFF6EAA24)),
                       ),
                     ),
                   ),
@@ -233,7 +233,7 @@ class _SignupPageState extends State<SignupPage> {
                         borderSide: BorderSide(color: Colors.grey),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFF1E5993)),
+                        borderSide: BorderSide(color: Color(0xFF6EAA24)),
                       ),
                     ),
                   ),
@@ -246,7 +246,7 @@ class _SignupPageState extends State<SignupPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1E5993),
+                              backgroundColor: const Color(0xFF6EAA24),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -284,7 +284,7 @@ class _SignupPageState extends State<SignupPage> {
                         child: const Text(
                           ' Login',
                           style: TextStyle(
-                            color: Color(0xFF1E5993),
+                            color: Color(0xFF6EAA24),
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),

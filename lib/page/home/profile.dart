@@ -57,13 +57,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1E5993), // Warna latar biru
+      backgroundColor: const Color(0xFF6EAA24), // Warna latar biru
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: const Color(0xFF1E5993),
+            color: const Color(0xFF6EAA24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

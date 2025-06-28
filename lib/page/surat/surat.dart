@@ -90,7 +90,7 @@ class _SuratPageState extends State<SuratPage> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xFF1E5993), width: 1.5),
+        borderSide: const BorderSide(color: Color(0xFF6EAA24), width: 1.5),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
     );
@@ -198,7 +198,7 @@ class _SuratPageState extends State<SuratPage> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: const BorderSide(
-                                color: Color(0xFF1E5993), width: 1.5),
+                                color: Color(0xFF6EAA24), width: 1.5),
                           ),
                         ),
                         items: jenisList.map((jenis) {
@@ -241,7 +241,7 @@ class _SuratPageState extends State<SuratPage> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
-                              color: Color(0xFF1E5993), width: 1.5),
+                              color: Color(0xFF6EAA24), width: 1.5),
                         ),
                       ),
                       validator: (value) =>
@@ -272,7 +272,7 @@ class _SuratPageState extends State<SuratPage> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
-                              color: Color(0xFF1E5993), width: 1.5),
+                              color: Color(0xFF6EAA24), width: 1.5),
                         ),
                       ),
                       validator: (value) =>
@@ -305,7 +305,7 @@ class _SuratPageState extends State<SuratPage> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide: const BorderSide(
-                              color: Color(0xFF1E5993), width: 1.5),
+                              color: Color(0xFF6EAA24), width: 1.5),
                         ),
                       ),
                       validator: (value) =>
@@ -321,7 +321,7 @@ class _SuratPageState extends State<SuratPage> {
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _submitSurat,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E5993),
+                  backgroundColor: const Color(0xFF6EAA24),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

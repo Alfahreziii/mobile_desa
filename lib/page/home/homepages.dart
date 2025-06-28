@@ -3,7 +3,7 @@ import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
 import 'package:concept/page/home/home.dart';
 import 'package:concept/page/home/cart.dart';
-import 'package:concept/page/home/favorite.dart';
+import 'package:concept/page/home/invoice.dart';
 import 'package:concept/page/home/profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final List<Widget> _pages = [
     const HomeMain(key: PageStorageKey('home')),
     const CartScreen(key: PageStorageKey('cart')),
-    const FavoriteScreen(key: PageStorageKey('favorite')),
+    const InvoicePage(key: PageStorageKey('favorite')),
     const ProfileScreen(key: PageStorageKey('profile')),
   ];
 
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         tabIconColor: const Color(0xFFA5A5A5),
         tabIconSize: 28.0,
         tabIconSelectedSize: 26.0,
-        tabSelectedColor: const Color(0xFF1E5993),
+        tabSelectedColor: const Color(0xFF6EAA24),
         tabIconSelectedColor: Colors.white,
         tabBarColor: Colors.white,
         onTabItemSelected: (int index) {
