@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:concept/core/models/iuran_model.dart';
+import 'package:concept/core/models/cpiuran_model.dart';
 import 'package:concept/core/services/iuran_service.dart';
+import 'package:concept/core/services/cpiuran_service.dart';
 
 class IuranPage extends StatefulWidget {
   const IuranPage({super.key});
@@ -15,11 +17,13 @@ class _IuranPageState extends State<IuranPage> {
   List<IuranModel> _iuranList = [];
   Set<int> _selectedIds = {};
   bool _isLoading = true;
+  CpiuranModel? _cpIuran;
 
   @override
   void initState() {
     super.initState();
     _loadIuran();
+    _loadCpIuran();
   }
 
   Future<void> _loadIuran() async {
@@ -37,6 +41,19 @@ class _IuranPageState extends State<IuranPage> {
     }
   }
 
+  Future<void> _loadCpIuran() async {
+    try {
+      final list = await CpiuranService.fetchCpiuranList();
+      if (list.isNotEmpty) {
+        setState(() {
+          _cpIuran = list.first;
+        });
+      }
+    } catch (e) {
+      print('❌ Gagal memuat CP Iuran: $e');
+    }
+  }
+
   int get _totalHarga {
     return _iuranList
         .where((e) => _selectedIds.contains(e.id))
@@ -45,11 +62,10 @@ class _IuranPageState extends State<IuranPage> {
 
   String formatBulan(String bulanStr) {
     try {
-      final date =
-          DateTime.parse(bulanStr); // parse dari string seperti "2025-05-01"
+      final date = DateTime.parse(bulanStr);
       return DateFormat('MMMM yyyy', 'id_ID').format(date);
     } catch (e) {
-      return bulanStr; // fallback kalau parsing gagal
+      return bulanStr;
     }
   }
 
@@ -62,9 +78,20 @@ class _IuranPageState extends State<IuranPage> {
     final bulanList = selected.map((e) => formatBulan(e.bulan)).join(', ');
 
     final pesan =
-        'Halo, saya ingin membayar iuran sebesar $total untuk bulan: $bulanList';
+        'Halo ${_cpIuran?.nama ?? ''}, saya ingin membayar iuran sebesar $total untuk bulan: $bulanList';
 
-    final bendaharaNo = '6282112318744'; // ← ganti dengan nomor WA bendahara
+    final bendaharaNo = _cpIuran?.no_hp.replaceFirst('0', '62');
+
+    if (bendaharaNo == null || bendaharaNo.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nomor WA bendahara tidak tersedia'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     final url = 'https://wa.me/$bendaharaNo?text=${Uri.encodeComponent(pesan)}';
 
     try {
@@ -124,6 +151,14 @@ class _IuranPageState extends State<IuranPage> {
                           'Silakan isi form berikut untuk melakukan pembayaran atau pelaporan iuran. Pastikan data yang Anda masukkan sudah benar.',
                           style: TextStyle(fontSize: 12, color: Colors.black54),
                         ),
+                        if (_cpIuran != null) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            'CP: ${_cpIuran!.nama} (${_cpIuran!.no_hp})',
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.black54),
+                          ),
+                        ],
                         RefreshIndicator(
                           onRefresh: _loadIuran,
                           child: ListView.builder(

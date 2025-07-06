@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:concept/config/routes.dart';
 import 'package:concept/core/services/shared_prefs_service.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   await dotenv.load(fileName: '.env');
   final isLoggedIn = await SharedPrefsService.isLoggedIn();
   runApp(MyApp(isLoggedIn: isLoggedIn));

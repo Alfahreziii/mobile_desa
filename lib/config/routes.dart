@@ -4,7 +4,6 @@ import 'package:concept/page/auth/login.dart';
 import 'package:concept/page/home/homepages.dart';
 import 'package:concept/page/auth/loginsignup.dart';
 import 'package:concept/page/auth/signup.dart';
-import 'package:concept/editproduct.dart';
 import 'package:concept/page/informasi/berita/detail_berita.dart';
 import 'package:concept/core/models/berita_model.dart';
 import 'package:concept/page/informasi/informasi.dart';
@@ -42,22 +41,6 @@ class AppRoutes {
             settings.name == '/signup')) {
       return MaterialPageRoute(builder: (_) => HomePage());
     }
-
-    if (settings.name == '/editproduct') {
-      try {
-        final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => EditProductPage(
-            productId: args['productId'],
-            productData: args['productData'],
-          ),
-        );
-      } catch (e) {
-        print("Error: $e");
-        return null;
-      }
-    }
-
     if (settings.name == '/editprofile') {
       try {
         final args = settings.arguments as Map<String, dynamic>;

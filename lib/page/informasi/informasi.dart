@@ -129,7 +129,8 @@ class _InformasiPageState extends State<InformasiPage>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16.0, top: 10.0),
+            padding: const EdgeInsets.only(
+                left: 16, right: 16.0, top: 10.0, bottom: 10.0),
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
