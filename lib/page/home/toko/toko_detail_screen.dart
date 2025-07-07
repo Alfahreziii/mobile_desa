@@ -51,13 +51,19 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
     final toko = widget.toko;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: Text(
-          toko.namaToko ?? 'Nama Toko Tidak Tersedia',
+        backgroundColor: const Color(0xFFF5F5F5),
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
+          'Detail Toko',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 1,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -112,6 +118,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
                         final item = _produkToko[index];
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
+                          color: Colors.white,
                           child: ListTile(
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(6),

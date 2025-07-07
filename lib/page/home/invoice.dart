@@ -12,11 +12,27 @@ class InvoicePage extends StatefulWidget {
 
 class _InvoicePageState extends State<InvoicePage> {
   late Future<List<IuranHistoryModel>> _futureHistory;
+  List<IuranHistoryModel> _data = [];
 
   @override
   void initState() {
     super.initState();
-    _futureHistory = IuranHistoryService.fetchHistory();
+    _futureHistory = _loadHistory();
+  }
+
+  Future<List<IuranHistoryModel>> _loadHistory() async {
+    final history = await IuranHistoryService.fetchHistory();
+    setState(() {
+      _data = history;
+    });
+    return history;
+  }
+
+  Future<void> _refreshHistory() async {
+    final history = await IuranHistoryService.fetchHistory();
+    setState(() {
+      _data = history;
+    });
   }
 
   String formatDate(DateTime date) {
@@ -27,7 +43,7 @@ class _InvoicePageState extends State<InvoicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inovice Iuran'),
+        title: const Text('Invoice Iuran'),
         centerTitle: true,
         backgroundColor: const Color(0xFFF5F5F5),
         elevation: 0,
@@ -46,82 +62,85 @@ class _InvoicePageState extends State<InvoicePage> {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Terjadi kesalahan: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } else if (_data.isEmpty) {
             return const Center(child: Text('Tidak ada data.'));
           }
 
-          final list = snapshot.data!;
-
-          return ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: list.length,
-            separatorBuilder: (_, __) => const Divider(),
-            itemBuilder: (context, index) {
-              final item = list[index];
-              return Card(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+          return RefreshIndicator(
+            onRefresh: _refreshHistory,
+            child: ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: _data.length,
+              separatorBuilder: (_, __) => const Divider(),
+              itemBuilder: (context, index) {
+                final item = _data[index];
+                return Card(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.namaUser,
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                  'Bulan Iuran: ${formatDate(item.bulanIuran)}'),
+                              Text('Dibayar pada: ${formatDate(item.paidAt)}'),
+                              Text('Email: ${item.emailUser}'),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              item.namaUser,
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                              NumberFormat.currency(
+                                locale: 'id_ID',
+                                symbol: 'Rp ',
+                                decimalDigits: 0,
+                              ).format(item.hargaIuran),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
-                            Text('Bulan Iuran: ${formatDate(item.bulanIuran)}'),
-                            Text('Dibayar pada: ${formatDate(item.paidAt)}'),
-                            Text('Email: ${item.emailUser}'),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            NumberFormat.currency(
-                              locale: 'id_ID',
-                              symbol: 'Rp ',
-                              decimalDigits: 0,
-                            ).format(item.hargaIuran),
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item.status,
-                            style: TextStyle(
+                            Text(
+                              item.status,
+                              style: TextStyle(
+                                color: item.status.toLowerCase() == 'lunas'
+                                    ? Colors.green
+                                    : Colors.orange,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Icon(
+                              Icons.receipt_long,
                               color: item.status.toLowerCase() == 'lunas'
                                   ? Colors.green
                                   : Colors.orange,
-                              fontWeight: FontWeight.w500,
+                              size: 32,
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Icon(
-                            Icons.receipt_long,
-                            color: item.status.toLowerCase() == 'lunas'
-                                ? Colors.green
-                                : Colors.orange,
-                            size: 32,
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),

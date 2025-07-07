@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:concept/core/services/auth_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -38,6 +40,15 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  void _launchForgotPassword() async {
+    final clientUrl = dotenv.env['CLIENT_URL'] ?? 'http://localhost:5173';
+    final Uri url = Uri.parse('$clientUrl/forgot-password');
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      _showErrorDialog("Tidak dapat membuka halaman reset password.");
     }
   }
 
@@ -172,7 +183,21 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _launchForgotPassword,
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Color(0xFF6EAA24),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
                   // Login Button
                   _isLoading
                       ? const Center(child: CircularProgressIndicator())

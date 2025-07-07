@@ -38,6 +38,21 @@ class _CartScreenState extends State<CartScreen> {
     return products;
   }
 
+  Future<void> _refreshProducts() async {
+    final products = await ProductService.fetchProduct();
+    setState(() {
+      _allProducts = products;
+      _filteredProducts = searchQuery.isNotEmpty
+          ? products.where((product) {
+              final name = product.nama_produk.toLowerCase();
+              final desc = product.deskripsi.toLowerCase();
+              return name.contains(searchQuery.toLowerCase()) ||
+                  desc.contains(searchQuery.toLowerCase());
+            }).toList()
+          : products;
+    });
+  }
+
   void _launchWhatsApp(String noHp, String message) async {
     String phone = noHp.replaceFirst('0', '62');
     final url =
@@ -67,7 +82,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void _showProductDetailModal(Product product) async {
-    // ambil data toko berdasarkan id_toko dari produk
     final toko = await TokoService.getTokoById(product.id_toko);
 
     if (!mounted) return;
@@ -139,8 +153,6 @@ class _CartScreenState extends State<CartScreen> {
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
-
-                // === TAMPILKAN INFO TOKO ===
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -177,9 +189,7 @@ class _CartScreenState extends State<CartScreen> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
@@ -232,7 +242,6 @@ Apakah masih tersedia?
       backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         children: [
-          // Search Bar
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
@@ -249,7 +258,6 @@ Apakah masih tersedia?
               ),
             ),
           ),
-          // Produk List
           Expanded(
             child: FutureBuilder<List<Product>>(
               future: _futureProduct,
@@ -263,116 +271,120 @@ Apakah masih tersedia?
                   return const Center(child: Text('Produk tidak ditemukan.'));
                 }
 
-                return GridView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.62,
-                  ),
-                  itemCount: _filteredProducts.length,
-                  itemBuilder: (context, index) {
-                    final item = _filteredProducts[index];
-                    return Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (item.foto.isNotEmpty)
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: CachedNetworkImage(
-                                  imageUrl: '${Env.fileUrl}/${item.foto}',
-                                  cacheManager: CustomCacheManager.instance,
-                                  width: double.infinity,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => Container(
-                                    height: 100,
-                                    color: Colors.grey[200],
-                                    child: const Center(
-                                        child: CircularProgressIndicator(
-                                            strokeWidth: 2)),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      Container(
-                                    height: 100,
-                                    color: Colors.grey[300],
-                                    child: const Icon(Icons.broken_image),
-                                  ),
-                                ),
-                              ),
-                            const SizedBox(height: 8),
-                            Text(
-                              item.nama_produk,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.deskripsi,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              item.stok > 0
-                                  ? 'Stok: ${item.stok}'
-                                  : 'Stok Habis',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color:
-                                    item.stok > 0 ? Colors.green : Colors.red,
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              NumberFormat.currency(
-                                locale: 'id_ID',
-                                symbol: 'Rp ',
-                                decimalDigits: 0,
-                              ).format(item.harga),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  _showProductDetailModal(item);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  foregroundColor: Colors.white,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 6),
-                                  textStyle: const TextStyle(fontSize: 12),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)),
-                                ),
-                                child: const Text('Beli'),
-                              ),
-                            ),
-                          ],
+                return RefreshIndicator(
+                  onRefresh: _refreshProducts,
+                  child: GridView.builder(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
+                      childAspectRatio: 0.62,
+                    ),
+                    itemCount: _filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      final item = _filteredProducts[index];
+                      return Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                      ),
-                    );
-                  },
+                        elevation: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (item.foto.isNotEmpty)
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: CachedNetworkImage(
+                                    imageUrl: '${Env.fileUrl}/${item.foto}',
+                                    cacheManager: CustomCacheManager.instance,
+                                    width: double.infinity,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Container(
+                                      height: 100,
+                                      color: Colors.grey[200],
+                                      child: const Center(
+                                          child: CircularProgressIndicator(
+                                              strokeWidth: 2)),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                      height: 100,
+                                      color: Colors.grey[300],
+                                      child: const Icon(Icons.broken_image),
+                                    ),
+                                  ),
+                                ),
+                              const SizedBox(height: 8),
+                              Text(
+                                item.nama_produk,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                item.deskripsi,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                item.stok > 0
+                                    ? 'Stok: ${item.stok}'
+                                    : 'Stok Habis',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      item.stok > 0 ? Colors.green : Colors.red,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'id_ID',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 0,
+                                ).format(item.harga),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _showProductDetailModal(item);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    foregroundColor: Colors.white,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 6),
+                                    textStyle: const TextStyle(fontSize: 12),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8)),
+                                  ),
+                                  child: const Text('Beli'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),

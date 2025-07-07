@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:concept/core/services/shared_prefs_service.dart';
 import 'package:concept/core/services/user_service.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -52,6 +54,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await prefs.remove('isLoggedIn'); // Atau bisa langsung prefs.clear();
 
     Navigator.pushReplacementNamed(context, '/login');
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _launchMarketPlace() async {
+    final clientUrl = dotenv.env['CLIENT_URL'] ?? 'http://localhost:5173';
+    final Uri url = Uri.parse('$clientUrl/toko-personal');
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      _showErrorDialog("Tidak dapat membuka halaman reset password.");
+    }
   }
 
   @override
@@ -188,6 +219,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         },
                       );
                     },
+                  ),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.shopping_cart,
+                      color: Color(0xFF2E294A),
+                    ),
+                    title: const Text(
+                      'Market Place',
+                      style: TextStyle(
+                        color: Color(0xFF2E294A),
+                      ),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFF2E294A),
+                    ),
+                    onTap: _launchMarketPlace,
                   ),
                   const ListTile(
                     title: Text(
