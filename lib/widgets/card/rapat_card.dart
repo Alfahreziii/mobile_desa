@@ -27,7 +27,7 @@ class RapatCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha((0.05 * 255).round()),
             offset: const Offset(0, 2),
           )
         ],
@@ -53,7 +53,7 @@ class RapatCard extends StatelessWidget {
                 ),
               ),
               Text(
-                formatTanggal(rapat.created_at_formatted),
+                formatTanggal(rapat.createdAtFormatted),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -63,7 +63,7 @@ class RapatCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           buildRow("Hari", rapat.hari),
-          buildRow("Jam", "${rapat.jam_mulai} - ${rapat.jam_selesai}"),
+          buildRow("Jam", "${rapat.jamMulai} - ${rapat.jamSelesai}"),
           buildRow("Tempat", rapat.tempat),
           buildRow("Peserta", rapat.peserta),
           buildRow("Pokok Bahasan", rapat.bahasan),

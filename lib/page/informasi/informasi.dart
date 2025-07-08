@@ -17,16 +17,19 @@ import 'package:concept/widgets/card/kerjabakti_card.dart';
 import 'package:concept/widgets/card/rapat_card.dart';
 import 'package:concept/widgets/card/pengajian_card.dart';
 import 'package:concept/widgets/card/tahlil_card.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class InformasiPage extends StatefulWidget {
   const InformasiPage({super.key, this.title});
   final String? title;
 
   @override
-  _InformasiPageState createState() => _InformasiPageState();
+  InformasiPageState createState() => InformasiPageState();
 }
 
-class _InformasiPageState extends State<InformasiPage>
+class InformasiPageState extends State<InformasiPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   String selectedCategory = "Berita";
@@ -83,7 +86,7 @@ class _InformasiPageState extends State<InformasiPage>
       }
       // Tambahkan fetchData untuk kategori lain
     } catch (e) {
-      print('Error: $e');
+      logger.d('Error: $e');
     }
   }
 
@@ -118,7 +121,7 @@ class _InformasiPageState extends State<InformasiPage>
               onChanged: (value) => setState(() => searchQuery = value),
               decoration: InputDecoration(
                 hintText: "Search",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide.none,
@@ -146,8 +149,8 @@ class _InformasiPageState extends State<InformasiPage>
                 ),
                 unselectedLabelColor: const Color(0xFF2E294A),
                 labelStyle: const TextStyle(fontSize: 16),
-                labelPadding:
-                    EdgeInsets.symmetric(horizontal: 16), // KUNCI UTAMA DI SINI
+                labelPadding: const EdgeInsets.symmetric(
+                    horizontal: 16), // KUNCI UTAMA DI SINI
                 tabs: const [
                   Tab(text: "Berita"),
                   Tab(text: "Rapat"),

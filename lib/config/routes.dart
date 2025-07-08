@@ -16,20 +16,23 @@ import 'package:concept/page/aduan/aduan.dart';
 import 'package:concept/page/home/profile/edit.dart';
 import 'package:concept/page/home/profile/emailpassword.dart';
 import 'package:concept/page/iuran/iuran.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
-    '/login': (context) => LoginPage(),
-    '/loginsign': (context) => LoginPageSign(),
-    '/signup': (context) => SignupPage(),
-    '/home': (context) => HomePage(),
+    '/login': (context) => const LoginPage(),
+    '/loginsign': (context) => const LoginPageSign(),
+    '/signup': (context) => const SignupPage(),
+    '/home': (context) => const HomePage(),
     '/informasi': (context) => const InformasiPage(),
     '/laporan': (context) => const LaporanPage(),
     '/surat': (context) => const SuratPage(),
     '/profil': (context) => const ProfilPage(),
     '/pengurus': (context) => const PengurusPage(),
     '/geografis': (context) => const GeografisPage(),
-    '/aduan': (context) => AduanPage(),
+    '/aduan': (context) => const AduanPage(),
     '/iuran': (context) => const IuranPage(),
   };
 
@@ -39,7 +42,7 @@ class AppRoutes {
         (settings.name == '/login' ||
             settings.name == '/loginsign' ||
             settings.name == '/signup')) {
-      return MaterialPageRoute(builder: (_) => HomePage());
+      return MaterialPageRoute(builder: (_) => const HomePage());
     }
     if (settings.name == '/editprofile') {
       try {
@@ -48,7 +51,7 @@ class AppRoutes {
           builder: (_) => EditProfilePage(currentUser: args['currentUser']),
         );
       } catch (e) {
-        print("Error saat parsing argumen edit profile: $e");
+        logger.d("Error saat parsing argumen edit profile: $e");
         return null;
       }
     }
@@ -61,7 +64,7 @@ class AppRoutes {
           ),
         );
       } catch (e) {
-        print("Error parsing args untuk emailpassword: $e");
+        logger.d("Error parsing args untuk emailpassword: $e");
         return null;
       }
     }
@@ -73,7 +76,7 @@ class AppRoutes {
           builder: (_) => DetailBeritaPage(berita: berita),
         );
       } catch (e) {
-        print("Error saat parsing argumen detail berita: $e");
+        logger.d("Error saat parsing argumen detail berita: $e");
         return null;
       }
     }

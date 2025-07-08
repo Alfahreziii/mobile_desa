@@ -36,7 +36,7 @@ class _SuratPageState extends State<SuratPage> {
         if (jenisList.isNotEmpty) selectedJenis = jenisList.first;
       });
     } catch (e) {
-      print(e);
+      logger.d(e);
     }
   }
 
@@ -147,7 +147,7 @@ class _SuratPageState extends State<SuratPage> {
                         padding: const EdgeInsets.all(12),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: _responseColor?.withOpacity(0.1),
+                          color: _responseColor?.withAlpha((0.1 * 255).round()),
                           border:
                               Border.all(color: _responseColor ?? Colors.grey),
                           borderRadius: BorderRadius.circular(8),
@@ -171,8 +171,8 @@ class _SuratPageState extends State<SuratPage> {
                     Theme(
                       data: Theme.of(context).copyWith(
                         canvasColor: Colors.white, // background dropdown list
-                        shadowColor:
-                            Colors.black.withOpacity(0.2), // efek shadow
+                        shadowColor: Colors.black
+                            .withAlpha((0.2 * 255).round()), // efek shadow
                         cardTheme: CardThemeData(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -204,7 +204,7 @@ class _SuratPageState extends State<SuratPage> {
                         items: jenisList.map((jenis) {
                           return DropdownMenuItem(
                             value: jenis,
-                            child: Text(jenis.nama_jenis),
+                            child: Text(jenis.namaJenis),
                           );
                         }).toList(),
                         onChanged: (value) {

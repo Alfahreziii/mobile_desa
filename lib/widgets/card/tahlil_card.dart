@@ -27,7 +27,7 @@ class TahlilCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha((0.05 * 255).round()),
             offset: const Offset(0, 2),
           )
         ],
@@ -53,7 +53,7 @@ class TahlilCard extends StatelessWidget {
                 ),
               ),
               Text(
-                formatTanggal(tahlil.created_at_formatted),
+                formatTanggal(tahlil.createdAtFormatted),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -63,7 +63,7 @@ class TahlilCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           buildRow("Hari", tahlil.hari),
-          buildRow("Jam", "${tahlil.jam_mulai} - ${tahlil.jam_selesai}"),
+          buildRow("Jam", "${tahlil.jamMulai} - ${tahlil.jamSelesai}"),
           buildRow("Tempat", tahlil.tempat),
           buildRow("Ustadzah", tahlil.ustadzah),
         ],

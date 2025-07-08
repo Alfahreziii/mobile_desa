@@ -2,6 +2,9 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart'; // penting untuk content-type
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:concept/config/env.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class AduanService {
   static Future<bool> createAduan({
@@ -39,8 +42,8 @@ class AduanService {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return true;
     } else {
-      print(await response.stream
-          .bytesToString()); // print pesan error dari backend
+      logger.d(await response.stream
+          .bytesToString()); // logger.d pesan error dari backend
       return false;
     }
   }

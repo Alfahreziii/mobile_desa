@@ -27,7 +27,7 @@ class PengajianCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha((0.05 * 255).round()),
             offset: const Offset(0, 2),
           )
         ],
@@ -53,7 +53,7 @@ class PengajianCard extends StatelessWidget {
                 ),
               ),
               Text(
-                formatTanggal(pengajian.created_at_formatted),
+                formatTanggal(pengajian.createdAtFormatted),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -63,7 +63,7 @@ class PengajianCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           buildRow("Hari", pengajian.hari),
-          buildRow("Jam", "${pengajian.jam_mulai} - ${pengajian.jam_selesai}"),
+          buildRow("Jam", "${pengajian.jamMulai} - ${pengajian.jamSelesai}"),
           buildRow("Tempat", pengajian.tempat),
           buildRow("Ustadzah", pengajian.ustadzah),
         ],

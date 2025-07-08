@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:concept/core/models/geografis_model.dart';
 import 'package:concept/config/env.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class GeografisService {
   static Future<List<Geografis>> fetchGeografis() async {
@@ -26,8 +29,8 @@ class GeografisService {
       final List list = jsonData['data'];
       return list.map((json) => Geografis.fromJson(json)).toList();
     } else {
-      print('Status: ${response.statusCode}');
-      print('Response: ${response.body}');
+      logger.d('Status: ${response.statusCode}');
+      logger.d('Response: ${response.body}');
       throw Exception('Gagal mengambil data Geografis');
     }
   }

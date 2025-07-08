@@ -27,7 +27,7 @@ class KerjaBaktiCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             blurRadius: 4,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha((0.05 * 255).round()),
             offset: const Offset(0, 2),
           )
         ],
@@ -53,7 +53,7 @@ class KerjaBaktiCard extends StatelessWidget {
                 ),
               ),
               Text(
-                formatTanggal(kerjabakti.created_at_formatted),
+                formatTanggal(kerjabakti.createdAtFormatted),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
@@ -63,8 +63,7 @@ class KerjaBaktiCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           buildRow("Hari", kerjabakti.hari),
-          buildRow(
-              "Jam", "${kerjabakti.jam_mulai} - ${kerjabakti.jam_selesai}"),
+          buildRow("Jam", "${kerjabakti.jamMulai} - ${kerjabakti.jamSelesai}"),
           buildRow("Tempat", kerjabakti.tempat),
           buildRow("Peserta", kerjabakti.peserta),
         ],

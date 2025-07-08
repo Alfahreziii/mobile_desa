@@ -2,13 +2,13 @@ class Geografis {
   final int id;
   final String judul;
   final String foto;
-  final String created_at_formatted;
+  final String createdAtFormatted;
 
   Geografis({
     required this.id,
     required this.judul,
     required this.foto,
-    required this.created_at_formatted,
+    required this.createdAtFormatted,
   });
 
   factory Geografis.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class Geografis {
       id: json['id'],
       judul: json['judul'],
       foto: json['foto'],
-      created_at_formatted: json['created_at_formatted'],
+      createdAtFormatted: json['created_at_formatted'],
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:concept/core/services/shared_prefs_service.dart';
 class EditProfilePage extends StatefulWidget {
   final UserModel currentUser;
 
-  const EditProfilePage({required this.currentUser});
+  const EditProfilePage({super.key, required this.currentUser});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -100,10 +100,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               builder: (context, child) {
                 return Theme(
                   data: ThemeData.light().copyWith(
-                    dialogBackgroundColor:
-                        Colors.white, // ✅ Background datepicker jadi putih
-                    colorScheme: ColorScheme.light(
-                      primary: Color(0xFF6EAA24), // warna tombol/aksen
+                    dialogTheme: const DialogThemeData(
+                      backgroundColor: Colors.white,
+                    ),
+                    colorScheme: const ColorScheme.light(
+                      primary: Color(0xFF6EAA24),
                       onPrimary: Colors.white,
                       onSurface: Colors.black,
                     ),

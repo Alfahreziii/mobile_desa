@@ -3,11 +3,13 @@ import 'package:concept/core/models/user_model.dart';
 import 'package:concept/core/services/auth_service.dart';
 
 class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
+
   @override
-  _SignupPageState createState() => _SignupPageState();
+  SignupPageState createState() => SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class SignupPageState extends State<SignupPage> {
   int step = 1;
   bool _isLoading = false;
   bool _showPassword = false;
@@ -185,9 +187,10 @@ class _SignupPageState extends State<SignupPage> {
           Align(
             alignment: Alignment.centerLeft,
             child: Transform.translate(
-              offset: Offset(-11, 0), // Ubah nilai x untuk menggeser ke kiri
+              offset:
+                  const Offset(-11, 0), // Ubah nilai x untuk menggeser ke kiri
               child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.black),
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -223,8 +226,8 @@ class _SignupPageState extends State<SignupPage> {
               padding: const EdgeInsets.only(top: 10),
               child: Text(
                 _stepErrorMessage,
-                style:
-                    TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                    color: Colors.red, fontWeight: FontWeight.w500),
               ),
             ),
 
@@ -298,8 +301,8 @@ class _SignupPageState extends State<SignupPage> {
               padding: const EdgeInsets.only(top: 10),
               child: Text(
                 _stepErrorMessage,
-                style:
-                    TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                    color: Colors.red, fontWeight: FontWeight.w500),
               ),
             ),
           _buildTextField(label: 'Nomor KK', controller: nomorKKController),
@@ -340,7 +343,7 @@ class _SignupPageState extends State<SignupPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ))),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -399,8 +402,8 @@ class _SignupPageState extends State<SignupPage> {
               padding: const EdgeInsets.only(top: 10),
               child: Text(
                 _stepErrorMessage,
-                style:
-                    TextStyle(color: Colors.red, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                    color: Colors.red, fontWeight: FontWeight.w500),
               ),
             ),
           _buildTextField(label: 'Pekerjaan', controller: pekerjaanController),
@@ -439,7 +442,7 @@ class _SignupPageState extends State<SignupPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ))),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

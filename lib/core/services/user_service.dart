@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:concept/config/env.dart';
 import 'package:concept/core/models/user_model.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class UserService {
   static Future<UserModel?> getCurrentUser() async {
@@ -25,11 +28,11 @@ class UserService {
         final userData = data['data'];
         return UserModel.fromJson(userData);
       } else {
-        print('❌ Gagal ambil profil: ${response.body}');
+        logger.d('❌ Gagal ambil profil: ${response.body}');
         return null;
       }
     } catch (e) {
-      print('❌ Error ambil profil: $e');
+      logger.d('❌ Error ambil profil: $e');
       return null;
     }
   }
@@ -53,13 +56,13 @@ class UserService {
       body: jsonEncode(user.toJson()),
     );
 
-    print('STATUS CODE: ${response.statusCode}');
-    print('RESPONSE BODY: ${response.body}');
+    logger.d('STATUS CODE: ${response.statusCode}');
+    logger.d('RESPONSE BODY: ${response.body}');
 
     if (response.statusCode == 200) {
       return true;
     } else {
-      print('Error updateProfile: ${response.statusCode} ${response.body}');
+      logger.d('Error updateProfile: ${response.statusCode} ${response.body}');
       return false;
     }
   }

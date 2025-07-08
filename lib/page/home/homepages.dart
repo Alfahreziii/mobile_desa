@@ -11,10 +11,10 @@ class HomePage extends StatefulWidget {
   final String? title;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late MotionTabBarController _motionTabBarController;
   int _currentTabIndex = 0;
 

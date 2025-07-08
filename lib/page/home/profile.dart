@@ -17,26 +17,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userEmail = '';
 
   void _loadUserData() async {
-    // Ambil data terbaru dari API
     final updatedUser = await UserService.getCurrentUser();
 
-    if (updatedUser != null) {
-      // Simpan ke SharedPreferences
-      await SharedPrefsService.saveUser(updatedUser);
+    if (!mounted) return;
 
+    if (updatedUser != null) {
+      await SharedPrefsService.saveUser(updatedUser);
       setState(() {
         userName = updatedUser.name;
         userEmail = updatedUser.email;
       });
     } else {
-      // fallback: pakai data lama dari SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? username = prefs.getString('userName');
-      String? email = prefs.getString('userEmail');
-
+      if (!mounted) return;
       setState(() {
-        userName = username ?? 'No Name';
-        userEmail = email ?? 'No Email';
+        userName = prefs.getString('userName') ?? 'No Name';
+        userEmail = prefs.getString('userEmail') ?? 'No Email';
       });
     }
   }
@@ -47,16 +43,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadUserData();
   }
 
-  Future<void> _logout(BuildContext context) async {
-    await SharedPrefsService.clearUser(); // ✅ Tambahkan ini
-
+  Future<void> _logout() async {
+    await SharedPrefsService.clearUser();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('isLoggedIn'); // Atau bisa langsung prefs.clear();
+    await prefs.remove('isLoggedIn');
 
+    if (!mounted) return;
     Navigator.pushReplacementNamed(context, '/login');
   }
 
   void _showErrorDialog(String message) {
+    if (!mounted) return;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -76,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _launchMarketPlace() async {
+  Future<void> _launchMarketPlace() async {
     final clientUrl = dotenv.env['CLIENT_URL'] ?? 'http://localhost:5173';
     final Uri url = Uri.parse('$clientUrl/toko-personal');
 
@@ -85,10 +82,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> _navigateToEditProfile() async {
+    final user = await SharedPrefsService.getUser();
+    if (!mounted) return;
+
+    final result = await Navigator.pushNamed(
+      context,
+      '/editprofile',
+      arguments: {'currentUser': user},
+    );
+
+    if (result == true) {
+      _loadUserData();
+    }
+  }
+
+  Future<void> _navigateToEmailPassword() async {
+    final user = await SharedPrefsService.getUser();
+    if (!mounted) return;
+
+    Navigator.pushNamed(
+      context,
+      '/emailpassword',
+      arguments: {'currentUser': user},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6EAA24), // Warna latar biru
+      backgroundColor: const Color(0xFF6EAA24),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 30), // Margin atas
+                const SizedBox(height: 30),
                 const Text(
                   'Profile',
                   style: TextStyle(
@@ -111,9 +134,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   children: [
                     Image.asset(
-                      'assets/image/default_profile.png', // Your logo path
+                      'assets/image/default_profile.png',
                       width: 80,
-                      height: 80, // Set appropriate size
+                      height: 80,
                     ),
                     const SizedBox(width: 15),
                     Column(
@@ -165,76 +188,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(
-                      Icons.person,
-                      color: Color(0xFF2E294A),
-                    ),
+                    leading: const Icon(Icons.person, color: Color(0xFF2E294A)),
                     title: const Text(
                       'Personal Information',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
+                      style: TextStyle(color: Color(0xFF2E294A)),
                     ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                    onTap: () async {
-                      final user = await SharedPrefsService.getUser();
-
-                      final result = await Navigator.pushNamed(
-                        context,
-                        '/editprofile',
-                        arguments: {'currentUser': user},
-                      );
-
-                      if (result == true) {
-                        _loadUserData(); // muat ulang saat kembali
-                      }
-                    },
+                    trailing: const Icon(Icons.arrow_forward_ios,
+                        color: Color(0xFF2E294A)),
+                    onTap: _navigateToEditProfile,
                   ),
                   ListTile(
-                    leading: const Icon(
-                      Icons.lock,
-                      color: Color(0xFF2E294A),
-                    ),
+                    leading: const Icon(Icons.lock, color: Color(0xFF2E294A)),
                     title: const Text(
                       'Password & Email',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
+                      style: TextStyle(color: Color(0xFF2E294A)),
                     ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                    onTap: () async {
-                      final user = await SharedPrefsService.getUser();
-                      Navigator.pushNamed(
-                        context,
-                        '/emailpassword',
-                        arguments: {
-                          'currentUser':
-                              user, // Lempar data user yang sedang login
-                        },
-                      );
-                    },
+                    trailing: const Icon(Icons.arrow_forward_ios,
+                        color: Color(0xFF2E294A)),
+                    onTap: _navigateToEmailPassword,
                   ),
                   ListTile(
-                    leading: const Icon(
-                      Icons.shopping_cart,
-                      color: Color(0xFF2E294A),
-                    ),
+                    leading: const Icon(Icons.shopping_cart,
+                        color: Color(0xFF2E294A)),
                     title: const Text(
                       'Market Place',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
+                      style: TextStyle(color: Color(0xFF2E294A)),
                     ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios,
+                        color: Color(0xFF2E294A)),
                     onTap: _launchMarketPlace,
                   ),
                   const ListTile(
@@ -247,23 +228,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(
-                      Icons.logout,
-                      color: Color(0xFF2E294A),
-                    ),
+                    leading: const Icon(Icons.logout, color: Color(0xFF2E294A)),
                     title: const Text(
                       'Logout',
-                      style: TextStyle(
-                        color: Color(0xFF2E294A),
-                      ),
+                      style: TextStyle(color: Color(0xFF2E294A)),
                     ),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xFF2E294A),
-                    ),
-                    onTap: () {
-                      _logout(context); // Panggil fungsi logout
-                    },
+                    trailing: const Icon(Icons.arrow_forward_ios,
+                        color: Color(0xFF2E294A)),
+                    onTap: _logout,
                   ),
                 ],
               ),

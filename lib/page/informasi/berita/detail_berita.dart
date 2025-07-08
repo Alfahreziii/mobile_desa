@@ -49,7 +49,7 @@ class DetailBeritaPage extends StatelessWidget {
 
               // Tanggal
               Text(
-                berita.created_at_formatted,
+                berita.createdAtFormatted,
                 style: const TextStyle(
                   fontSize: 13,
                   color: Colors.grey,

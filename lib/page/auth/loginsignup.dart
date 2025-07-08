@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:concept/page/auth/login.dart';
 
 class LoginPageSign extends StatelessWidget {
-  const LoginPageSign({Key? key}) : super(key: key);
+  const LoginPageSign({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class LoginPageSign extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF6EAA24),
+                          backgroundColor: const Color(0xFF6EAA24),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -65,7 +65,7 @@ class LoginPageSign extends StatelessWidget {
                           Navigator.of(context).push(PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    LoginPage(),
+                                    const LoginPage(),
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {
                               return FadeTransition(
@@ -91,7 +91,7 @@ class LoginPageSign extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF2D4F2B),
+                          backgroundColor: const Color(0xFF2D4F2B),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),

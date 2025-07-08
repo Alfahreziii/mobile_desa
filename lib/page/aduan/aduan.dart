@@ -4,27 +4,39 @@ import 'package:image_picker/image_picker.dart';
 import 'package:concept/core/services/aduan_service.dart';
 
 class AduanPage extends StatefulWidget {
+  const AduanPage({super.key});
+
   @override
-  _AduanPageState createState() => _AduanPageState();
+  AduanPageState createState() => AduanPageState();
 }
 
-class _AduanPageState extends State<AduanPage> {
+class AduanPageState extends State<AduanPage> {
   final judulController = TextEditingController();
   final keteranganController = TextEditingController();
   String _successMessage = '';
+  bool _isPickingImage = false;
 
   File? _selectedImage;
   bool _isLoading = false;
   String _errorMessage = '';
 
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (_isPickingImage) return; // cegah double tap
+    _isPickingImage = true;
 
-    if (picked != null) {
-      setState(() {
-        _selectedImage = File(picked.path);
-      });
+    try {
+      final picker = ImagePicker();
+      final picked = await picker.pickImage(source: ImageSource.gallery);
+
+      if (picked != null) {
+        setState(() {
+          _selectedImage = File(picked.path);
+        });
+      }
+    } catch (e) {
+      debugPrint("Gagal memilih gambar: $e");
+    } finally {
+      _isPickingImage = false;
     }
   }
 
@@ -243,7 +255,7 @@ class _AduanPageState extends State<AduanPage> {
 class DottedBorderContainer extends StatelessWidget {
   final Widget child;
 
-  const DottedBorderContainer({required this.child});
+  const DottedBorderContainer({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

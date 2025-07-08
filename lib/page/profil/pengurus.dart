@@ -30,7 +30,7 @@ class _PengurusPageState extends State<PengurusPage> {
         pengurusList = result;
       });
     } catch (e) {
-      print(e);
+      logger.d(e);
     } finally {
       setState(() {
         isLoading = false;
@@ -76,7 +76,7 @@ class _PengurusPageState extends State<PengurusPage> {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withAlpha((0.05 * 255).round()),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -121,7 +121,7 @@ class _PengurusPageState extends State<PengurusPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                pengurus.jabatan_rel ?? pengurus.jabatan,
+                                pengurus.jabatanRel ?? pengurus.jabatan,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -162,7 +162,7 @@ class _PengurusPageState extends State<PengurusPage> {
                                       size: 12, color: Colors.grey),
                                   const SizedBox(width: 6),
                                   Text(
-                                    pengurus.no_hp,
+                                    pengurus.noHp,
                                     style: const TextStyle(fontSize: 13),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -208,7 +208,7 @@ class _PengurusPageState extends State<PengurusPage> {
         pengurusList = result;
       });
     } catch (e) {
-      print('Refresh Error: $e');
+      logger.d('Refresh Error: $e');
     } finally {
       setState(() {
         isLoading = false;

@@ -1,13 +1,13 @@
 class JenisSurat {
   final int id;
-  final String nama_jenis;
+  final String namaJenis;
 
-  JenisSurat({required this.id, required this.nama_jenis});
+  JenisSurat({required this.id, required this.namaJenis});
 
   factory JenisSurat.fromJson(Map<String, dynamic> json) {
     return JenisSurat(
       id: json['id'],
-      nama_jenis: json['nama_jenis'],
+      namaJenis: json['nama_jenis'],
     );
   }
 }

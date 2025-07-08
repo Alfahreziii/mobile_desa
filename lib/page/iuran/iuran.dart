@@ -5,6 +5,9 @@ import 'package:concept/core/models/iuran_model.dart';
 import 'package:concept/core/models/cpiuran_model.dart';
 import 'package:concept/core/services/iuran_service.dart';
 import 'package:concept/core/services/cpiuran_service.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class IuranPage extends StatefulWidget {
   const IuranPage({super.key});
@@ -15,7 +18,8 @@ class IuranPage extends StatefulWidget {
 
 class _IuranPageState extends State<IuranPage> {
   List<IuranModel> _iuranList = [];
-  Set<int> _selectedIds = {};
+  final Set<int> _selectedIds = {};
+
   bool _isLoading = true;
   CpiuranModel? _cpIuran;
 
@@ -37,7 +41,7 @@ class _IuranPageState extends State<IuranPage> {
       setState(() {
         _isLoading = false;
       });
-      print('❌ Gagal memuat data iuran: $e');
+      logger.d('❌ Gagal memuat data iuran: $e');
     }
   }
 
@@ -50,7 +54,7 @@ class _IuranPageState extends State<IuranPage> {
         });
       }
     } catch (e) {
-      print('❌ Gagal memuat CP Iuran: $e');
+      logger.d('❌ Gagal memuat CP Iuran: $e');
     }
   }
 
@@ -80,9 +84,10 @@ class _IuranPageState extends State<IuranPage> {
     final pesan =
         'Halo ${_cpIuran?.nama ?? ''}, saya ingin membayar iuran sebesar $total untuk bulan: $bulanList';
 
-    final bendaharaNo = _cpIuran?.no_hp.replaceFirst('0', '62');
+    final bendaharaNo = _cpIuran?.noHp.replaceFirst('0', '62');
 
     if (bendaharaNo == null || bendaharaNo.isEmpty) {
+      if (!mounted) return; // tambahkan ini
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Nomor WA bendahara tidak tersedia'),
@@ -97,7 +102,9 @@ class _IuranPageState extends State<IuranPage> {
     try {
       final uri = Uri.parse(url);
       await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (!mounted) return; // tambahkan ini
     } catch (e) {
+      if (!mounted) return; // tambahkan ini
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Gagal membuka WhatsApp: $e'),
@@ -126,9 +133,13 @@ class _IuranPageState extends State<IuranPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
+          : RefreshIndicator(
+              onRefresh: () async {
+                await _loadIuran();
+                await _loadCpIuran();
+              },
+              child: ListView(
+                padding: const EdgeInsets.all(16),
                 children: [
                   Container(
                     width: double.infinity,
@@ -154,76 +165,73 @@ class _IuranPageState extends State<IuranPage> {
                         if (_cpIuran != null) ...[
                           const SizedBox(height: 8),
                           Text(
-                            'CP: ${_cpIuran!.nama} (${_cpIuran!.no_hp})',
+                            'CP: ${_cpIuran!.nama} (${_cpIuran!.noHp})',
                             style: const TextStyle(
                                 fontSize: 12, color: Colors.black54),
                           ),
                         ],
-                        RefreshIndicator(
-                          onRefresh: _loadIuran,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: _iuranList.length,
-                            itemBuilder: (context, index) {
-                              final item = _iuranList[index];
-                              return CheckboxListTile(
-                                visualDensity:
-                                    const VisualDensity(horizontal: -4),
-                                contentPadding: EdgeInsets.zero,
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                value: item.status == 'lunas'
-                                    ? true
-                                    : _selectedIds.contains(item.id),
-                                onChanged: item.status == 'lunas'
-                                    ? null
-                                    : (val) {
-                                        setState(() {
-                                          if (val == true) {
-                                            _selectedIds.add(item.id);
-                                          } else {
-                                            _selectedIds.remove(item.id);
-                                          }
-                                        });
-                                      },
-                                activeColor: item.status == 'lunas'
-                                    ? const Color(0xFFA5A5A5)
-                                    : const Color(0xFF6EAA24),
-                                checkColor: Colors.white,
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(formatBulan(item.bulan)),
-                                    if (item.status == 'lunas')
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.shade100,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        child: const Text(
-                                          'Lunas',
-                                          style: TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 12),
-                                        ),
+                        const SizedBox(height: 12),
+
+                        // ✅ Ini tetap pakai ListView.builder tapi jangan gunakan scroll sendiri (disable scroll)
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _iuranList.length,
+                          itemBuilder: (context, index) {
+                            final item = _iuranList[index];
+                            return CheckboxListTile(
+                              visualDensity:
+                                  const VisualDensity(horizontal: -4),
+                              contentPadding: EdgeInsets.zero,
+                              controlAffinity: ListTileControlAffinity.leading,
+                              value: item.status == 'lunas'
+                                  ? true
+                                  : _selectedIds.contains(item.id),
+                              onChanged: item.status == 'lunas'
+                                  ? null
+                                  : (val) {
+                                      setState(() {
+                                        if (val == true) {
+                                          _selectedIds.add(item.id);
+                                        } else {
+                                          _selectedIds.remove(item.id);
+                                        }
+                                      });
+                                    },
+                              activeColor: item.status == 'lunas'
+                                  ? const Color(0xFFA5A5A5)
+                                  : const Color(0xFF6EAA24),
+                              checkColor: Colors.white,
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(formatBulan(item.bulan)),
+                                  if (item.status == 'lunas')
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.shade100,
+                                        borderRadius: BorderRadius.circular(6),
                                       ),
-                                  ],
-                                ),
-                                secondary: Text(
-                                  NumberFormat.currency(
-                                    locale: 'id_ID',
-                                    symbol: 'Rp ',
-                                    decimalDigits: 0,
-                                  ).format(item.harga),
-                                ),
-                              );
-                            },
-                          ),
+                                      child: const Text(
+                                        'Lunas',
+                                        style: TextStyle(
+                                            color: Colors.green, fontSize: 12),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              secondary: Text(
+                                NumberFormat.currency(
+                                  locale: 'id_ID',
+                                  symbol: 'Rp ',
+                                  decimalDigits: 0,
+                                ).format(item.harga),
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(height: 30),
                         Row(

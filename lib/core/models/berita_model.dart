@@ -3,14 +3,14 @@ class Berita {
   final String judul;
   final String deskripsi;
   final String foto;
-  final String created_at_formatted;
+  final String createdAtFormatted;
 
   Berita({
     required this.id,
     required this.judul,
     required this.deskripsi,
     required this.foto,
-    required this.created_at_formatted,
+    required this.createdAtFormatted,
   });
 
   factory Berita.fromJson(Map<String, dynamic> json) {
@@ -19,7 +19,7 @@ class Berita {
       judul: json['judul'],
       deskripsi: json['deskripsi'],
       foto: json['foto'],
-      created_at_formatted: json['created_at_formatted'],
+      createdAtFormatted: json['created_at_formatted'],
     );
   }
 }

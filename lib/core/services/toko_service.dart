@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:concept/core/models/toko_model.dart';
 import 'package:concept/config/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class TokoService {
   static Future<List<Toko>> fetchTokoList() async {
@@ -33,8 +36,8 @@ class TokoService {
       },
     );
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    logger.d('Response status: ${response.statusCode}');
+    logger.d('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body)['data'];

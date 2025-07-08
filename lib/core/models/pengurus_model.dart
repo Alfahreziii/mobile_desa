@@ -5,8 +5,8 @@ class Pengurus {
   final String foto;
   final String jabatan;
   final String alamat;
-  final String no_hp;
-  final String? jabatan_rel;
+  final String noHp;
+  final String? jabatanRel;
 
   Pengurus({
     required this.id,
@@ -15,8 +15,8 @@ class Pengurus {
     required this.foto,
     required this.jabatan,
     required this.alamat,
-    required this.no_hp,
-    required this.jabatan_rel,
+    required this.noHp,
+    required this.jabatanRel,
   });
 
   factory Pengurus.fromJson(Map<String, dynamic> json) {
@@ -27,8 +27,8 @@ class Pengurus {
       foto: json['foto'],
       jabatan: json['jabatan'],
       alamat: json['alamat'],
-      no_hp: json['no_hp'],
-      jabatan_rel: json['jabatan_rel'] != null
+      noHp: json['no_hp'],
+      jabatanRel: json['jabatan_rel'] != null
           ? json['jabatan_rel']['nama_jabatan']
           : null,
     );

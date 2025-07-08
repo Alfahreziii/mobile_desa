@@ -4,8 +4,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -18,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      _showErrorDialog("email or password cannot be empty.");
+      _showErrorDialog("Email atau password tidak boleh kosong.");
       return;
     }
 
@@ -29,17 +31,21 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final result = await AuthService.login(email, password);
 
+      if (!mounted) return; // ✅ Hindari context setelah async
+
       if (result['success']) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         _showErrorDialog(result['message']);
       }
     } catch (e) {
-      _showErrorDialog("An error occurred: $e");
+      _showErrorDialog("Terjadi kesalahan: $e");
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -61,9 +67,7 @@ class _LoginPageState extends State<LoginPage> {
           content: Text(message),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('OK'),
             ),
           ],
@@ -106,16 +110,13 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header Bar
                   const SizedBox(height: 45),
-
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Transform.translate(
-                      offset: Offset(
-                          -11, 0), // Ubah nilai x untuk menggeser ke kiri
+                      offset: const Offset(-11, 0),
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.black),
+                        icon: const Icon(Icons.arrow_back, color: Colors.black),
                         onPressed: () {
                           Navigator.pushNamed(context, '/loginsign');
                         },
@@ -123,19 +124,17 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 50),
+
                   // Logo
                   Center(
-                    child: Image.asset(
-                      'assets/image/logo.png',
-                    ),
+                    child: Image.asset('assets/image/logo.png'),
                   ),
                   const SizedBox(height: 56),
+
                   // Login Title
                   Align(
-                    alignment: Alignment.centerLeft, // Mengatur gambar ke kiri
-                    child: Image.asset(
-                      'assets/image/login.png',
-                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Image.asset('assets/image/login.png'),
                   ),
                   const Text(
                     'Hello There!\nWelcome Back',
@@ -146,7 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                     textAlign: TextAlign.left,
                   ),
                   const SizedBox(height: 30),
-                  // Input Forms
+
+                  // Input Fields
                   TextField(
                     controller: _emailController,
                     decoration: const InputDecoration(
@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF6EAA24),
+                              backgroundColor: const Color(0xFF6EAA24),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -223,7 +223,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                   const SizedBox(height: 20),
-                  // Sign Up Link
+
+                  // Sign Up
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

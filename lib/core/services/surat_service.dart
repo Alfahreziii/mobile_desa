@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:concept/config/env.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class SuratService {
   static Future<void> createSurat({
@@ -29,7 +32,7 @@ class SuratService {
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
-      print("Error: ${response.statusCode}");
+      logger.d("Error: ${response.statusCode}");
       throw Exception("Gagal membuat surat");
     }
   }

@@ -9,10 +9,10 @@ class BeritaCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const BeritaCard({
-    Key? key,
+    super.key,
     required this.berita,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class BeritaCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha((0.05 * 255).round()),
               blurRadius: 4,
               offset: const Offset(0, 2),
             )
@@ -80,7 +80,7 @@ class BeritaCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                berita.created_at_formatted,
+                berita.createdAtFormatted,
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.grey,

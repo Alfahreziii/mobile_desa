@@ -30,7 +30,7 @@ class _LaporanPageState extends State<LaporanPage> {
         }
       });
     } catch (e) {
-      print(e);
+      logger.d(e);
     }
   }
 
@@ -106,7 +106,7 @@ class _LaporanPageState extends State<LaporanPage> {
                         items: laporanList.map((lap) {
                           return DropdownMenuItem(
                             value: lap,
-                            child: Text(formatMonth(lap.tanggal_laporan)),
+                            child: Text(formatMonth(lap.tanggalLaporan)),
                           );
                         }).toList(),
                       ),
@@ -136,32 +136,32 @@ class _LaporanPageState extends State<LaporanPage> {
                         ),
                         const SizedBox(height: 12),
                         buildRow(
-                            'Jumlah Rumah', '${laporan.jumlah_rumah} Rumah'),
-                        buildRow('Jumlah KK', '${laporan.jumlah_kk} KK'),
+                            'Jumlah Rumah', '${laporan.jumlahRumah} Rumah'),
+                        buildRow('Jumlah KK', '${laporan.jumlahKk} KK'),
                         buildRow(
-                            'Jumlah Jiwa', '${laporan.jumlah_penduduk} Jiwa'),
+                            'Jumlah Jiwa', '${laporan.jumlahPenduduk} Jiwa'),
                         buildRow(
                           'Jumlah Laki-laki',
-                          '${laporan.jumlah_laki} Jiwa (${((laporan.jumlah_laki / (laporan.jumlah_penduduk == 0 ? 1 : laporan.jumlah_penduduk)) * 100).toStringAsFixed(0)}%)',
+                          '${laporan.jumlahLaki} Jiwa (${((laporan.jumlahLaki / (laporan.jumlahPenduduk == 0 ? 1 : laporan.jumlahPenduduk)) * 100).toStringAsFixed(0)}%)',
                         ),
                         buildRow(
                           'Jumlah Perempuan',
-                          '${laporan.jumlah_perempuan} Jiwa (${((laporan.jumlah_perempuan / (laporan.jumlah_penduduk == 0 ? 1 : laporan.jumlah_penduduk)) * 100).toStringAsFixed(0)}%)',
+                          '${laporan.jumlahPerempuan} Jiwa (${((laporan.jumlahPerempuan / (laporan.jumlahPenduduk == 0 ? 1 : laporan.jumlahPenduduk)) * 100).toStringAsFixed(0)}%)',
                         ),
                         buildRow(
                             'Jumlah Meninggal',
-                            laporan.jumlah_meninggal > 0
-                                ? '${laporan.jumlah_meninggal}'
+                            laporan.jumlahMeninggal > 0
+                                ? '${laporan.jumlahMeninggal}'
                                 : '-'),
                         buildRow(
                             'Jumlah Lahir',
-                            laporan.jumlah_lahir > 0
-                                ? '${laporan.jumlah_lahir}'
+                            laporan.jumlahLahir > 0
+                                ? '${laporan.jumlahLahir}'
                                 : '-'),
                         buildRow(
                             'Jumlah Pindah',
-                            laporan.jumlah_pindah > 0
-                                ? '${laporan.jumlah_pindah}'
+                            laporan.jumlahPindah > 0
+                                ? '${laporan.jumlahPindah}'
                                 : '-'),
                       ],
                     ),

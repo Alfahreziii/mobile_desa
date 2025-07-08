@@ -6,7 +6,7 @@ import 'package:concept/core/services/shared_prefs_service.dart';
 class EmailPasswordPage extends StatefulWidget {
   final UserModel currentUser;
 
-  const EmailPasswordPage({required this.currentUser});
+  const EmailPasswordPage({super.key, required this.currentUser});
 
   @override
   State<EmailPasswordPage> createState() => _EmailPasswordPageState();

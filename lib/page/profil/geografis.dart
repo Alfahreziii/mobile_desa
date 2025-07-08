@@ -30,7 +30,7 @@ class _GeografisPageState extends State<GeografisPage> {
         geografisList = result;
       });
     } catch (e) {
-      print(e);
+      logger.d(e);
     } finally {
       setState(() {
         isLoading = false;
@@ -71,7 +71,7 @@ class _GeografisPageState extends State<GeografisPage> {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withAlpha((0.05 * 255).round()),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -139,7 +139,7 @@ class _GeografisPageState extends State<GeografisPage> {
         geografisList = result;
       });
     } catch (e) {
-      print('Refresh Error: $e');
+      logger.d('Refresh Error: $e');
     } finally {
       setState(() {
         isLoading = false;

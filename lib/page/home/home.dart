@@ -10,10 +10,10 @@ class HomeMain extends StatefulWidget {
   final String? title;
 
   @override
-  _HomeMainState createState() => _HomeMainState();
+  HomeMainState createState() => HomeMainState();
 }
 
-class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
+class HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   String userName = '';
   bool isLoading = false;
 
@@ -29,7 +29,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
         beritaList = berita.reversed.take(5).toList();
       });
     } catch (e) {
-      print(e.toString());
+      logger.d(e.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -170,7 +170,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                           image: AssetImage(item['image']),
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.4),
+                            Colors.black.withAlpha((0.4 * 255).round()),
                             BlendMode.darken,
                           ),
                         ),
@@ -242,7 +242,8 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: Colors.black
+                                      .withAlpha((0.1 * 255).round()),
                                   blurRadius: 4,
                                   offset: const Offset(0, 2),
                                 )
@@ -298,7 +299,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
                                   child: Text(
-                                    berita.created_at_formatted,
+                                    berita.createdAtFormatted,
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Colors.grey,

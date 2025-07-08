@@ -44,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
       _allProducts = products;
       _filteredProducts = searchQuery.isNotEmpty
           ? products.where((product) {
-              final name = product.nama_produk.toLowerCase();
+              final name = product.namaProduk.toLowerCase();
               final desc = product.deskripsi.toLowerCase();
               return name.contains(searchQuery.toLowerCase()) ||
                   desc.contains(searchQuery.toLowerCase());
@@ -61,6 +61,7 @@ class _CartScreenState extends State<CartScreen> {
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Tidak dapat membuka WhatsApp')),
       );
@@ -69,7 +70,7 @@ class _CartScreenState extends State<CartScreen> {
 
   void _filterProducts(String query) {
     final filtered = _allProducts.where((product) {
-      final name = product.nama_produk.toLowerCase();
+      final name = product.namaProduk.toLowerCase();
       final desc = product.deskripsi.toLowerCase();
       return name.contains(query.toLowerCase()) ||
           desc.contains(query.toLowerCase());
@@ -82,7 +83,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void _showProductDetailModal(Product product) async {
-    final toko = await TokoService.getTokoById(product.id_toko);
+    final toko = await TokoService.getTokoById(product.idToko);
 
     if (!mounted) return;
 
@@ -131,7 +132,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 const SizedBox(height: 16),
                 Text(
-                  product.nama_produk,
+                  product.namaProduk,
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -196,13 +197,13 @@ class _CartScreenState extends State<CartScreen> {
                     onPressed: () {
                       final message = '''
 Halo, saya ingin membeli produk:
-📦 Nama Produk: ${product.nama_produk}
+📦 Nama Produk: ${product.namaProduk}
 💵 Harga: Rp ${product.harga}
 🛒 Stok: ${product.stok}
 
 Apakah masih tersedia?
 ''';
-                      _launchWhatsApp(product.no_hp_toko, message);
+                      _launchWhatsApp(product.noHpToko, message);
                     },
                     icon: const FaIcon(FontAwesomeIcons.whatsapp, size: 16),
                     label: const Text('Hubungi via WhatsApp'),
@@ -323,7 +324,7 @@ Apakah masih tersedia?
                                 ),
                               const SizedBox(height: 8),
                               Text(
-                                item.nama_produk,
+                                item.namaProduk,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(

@@ -8,10 +8,10 @@ class ProfilPage extends StatefulWidget {
   final String? title;
 
   @override
-  _ProfilPageState createState() => _ProfilPageState();
+  ProfilPageState createState() => ProfilPageState();
 }
 
-class _ProfilPageState extends State<ProfilPage> with TickerProviderStateMixin {
+class ProfilPageState extends State<ProfilPage> with TickerProviderStateMixin {
   String userName = '';
   bool isLoading = false;
 
@@ -27,7 +27,7 @@ class _ProfilPageState extends State<ProfilPage> with TickerProviderStateMixin {
         beritaList = berita.reversed.take(5).toList();
       });
     } catch (e) {
-      print(e.toString());
+      logger.d(e.toString());
     } finally {
       setState(() {
         isLoading = false;
@@ -161,7 +161,7 @@ class _ProfilPageState extends State<ProfilPage> with TickerProviderStateMixin {
                             image: AssetImage(item['image']),
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.4),
+                              Colors.black.withAlpha((0.4 * 255).round()),
                               BlendMode.darken,
                             ),
                           ),
