@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:concept/core/services/auth_service.dart';
+import 'package:smartofficial/core/services/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -14,6 +14,20 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _redirectIfLoggedIn();
+  }
+
+  Future<void> _redirectIfLoggedIn() async {
+    final loggedIn = await AuthService.isLoggedIn();
+    if (loggedIn) {
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
 
   Future<void> _login() async {
     final email = _emailController.text;
@@ -31,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final result = await AuthService.login(email, password);
 
-      if (!mounted) return; // ✅ Hindari context setelah async
+      if (!mounted) return;
 
       if (result['success']) {
         Navigator.pushReplacementNamed(context, '/home');
@@ -103,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -124,14 +137,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 50),
-
-                  // Logo
                   Center(
                     child: Image.asset('assets/image/logo.png'),
                   ),
                   const SizedBox(height: 56),
-
-                  // Login Title
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Image.asset('assets/image/login.png'),
@@ -145,8 +154,6 @@ class _LoginPageState extends State<LoginPage> {
                     textAlign: TextAlign.left,
                   ),
                   const SizedBox(height: 30),
-
-                  // Input Fields
                   TextField(
                     controller: _emailController,
                     decoration: const InputDecoration(
@@ -197,8 +204,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-
-                  // Login Button
                   _isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : SizedBox(
@@ -223,8 +228,6 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                   const SizedBox(height: 20),
-
-                  // Sign Up
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

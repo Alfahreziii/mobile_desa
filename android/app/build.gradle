@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.concept"
+    namespace = "com.example.smartofficial"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -19,9 +19,19 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("my-release-key.keystore")
+            storePassword = System.getenv("MY_KEYSTORE_PASSWORD") ?: project.property("MY_KEYSTORE_PASSWORD") as String
+            keyAlias = System.getenv("MY_KEY_ALIAS") ?: project.property("MY_KEY_ALIAS") as String
+            keyPassword = System.getenv("MY_KEY_PASSWORD") ?: project.property("MY_KEY_PASSWORD") as String
+        }
+    }
+
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.concept"
+        applicationId = "com.example.smartofficial"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -32,9 +42,9 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
         }
     }
 }

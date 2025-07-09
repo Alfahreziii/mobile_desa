@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:concept/core/models/user_model.dart';
-import 'package:concept/core/services/user_service.dart';
-import 'package:concept/core/services/shared_prefs_service.dart';
+import 'package:smartofficial/core/models/user_model.dart';
+import 'package:smartofficial/core/services/user_service.dart';
+import 'package:smartofficial/core/services/shared_prefs_service.dart';
 
 class EditProfilePage extends StatefulWidget {
   final UserModel currentUser;

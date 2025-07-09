@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:concept/core/models/toko_model.dart';
-import 'package:concept/core/models/product_model.dart';
-import 'package:concept/core/services/product_service.dart';
+import 'package:smartofficial/core/models/toko_model.dart';
+import 'package:smartofficial/core/models/product_model.dart';
+import 'package:smartofficial/core/services/product_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:concept/config/env.dart';
-import 'package:concept/core/services/cache/custom_cache_manager.dart';
+import 'package:smartofficial/config/env.dart';
+import 'package:smartofficial/core/services/cache/custom_cache_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

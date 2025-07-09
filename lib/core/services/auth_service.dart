@@ -1,10 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:concept/config/env.dart';
-import 'package:concept/core/models/user_model.dart';
+import 'package:smartofficial/config/env.dart';
+import 'package:smartofficial/core/models/user_model.dart';
 
 class AuthService {
+  static Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    return token != null && token.isNotEmpty;
+  }
+
   static Future<Map<String, dynamic>> register(UserModel user) async {
     final response = await http.post(
       Uri.parse('${Env.baseUrl}/auth/register'),

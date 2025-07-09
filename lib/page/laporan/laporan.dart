@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:concept/core/models/laporan_model.dart';
-import 'package:concept/core/services/laporan_service.dart';
+import 'package:smartofficial/core/models/laporan_model.dart';
+import 'package:smartofficial/core/services/laporan_service.dart';
 import 'package:intl/intl.dart';
 
 class LaporanPage extends StatefulWidget {

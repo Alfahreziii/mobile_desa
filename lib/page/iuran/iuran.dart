@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:concept/core/models/iuran_model.dart';
-import 'package:concept/core/models/cpiuran_model.dart';
-import 'package:concept/core/services/iuran_service.dart';
-import 'package:concept/core/services/cpiuran_service.dart';
+import 'package:smartofficial/core/models/iuran_model.dart';
+import 'package:smartofficial/core/models/cpiuran_model.dart';
+import 'package:smartofficial/core/services/iuran_service.dart';
+import 'package:smartofficial/core/services/cpiuran_service.dart';
 import 'package:logger/logger.dart';
 
 final logger = Logger();

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:concept/config/env.dart';
-import 'package:concept/core/models/cpiuran_model.dart';
+import 'package:smartofficial/config/env.dart';
+import 'package:smartofficial/core/models/cpiuran_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CpiuranService {

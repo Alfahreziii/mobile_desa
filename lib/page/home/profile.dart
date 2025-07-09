@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:concept/core/services/shared_prefs_service.dart';
-import 'package:concept/core/services/user_service.dart';
+import 'package:smartofficial/core/services/shared_prefs_service.dart';
+import 'package:smartofficial/core/services/user_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 

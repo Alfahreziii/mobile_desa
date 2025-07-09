@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:concept/core/services/surat_service.dart';
-import 'package:concept/core/services/jenissurat_service.dart';
-import 'package:concept/core/models/jenissurat_model.dart';
+import 'package:smartofficial/core/services/surat_service.dart';
+import 'package:smartofficial/core/services/jenissurat_service.dart';
+import 'package:smartofficial/core/models/jenissurat_model.dart';
 
 class SuratPage extends StatefulWidget {
   const SuratPage({super.key});

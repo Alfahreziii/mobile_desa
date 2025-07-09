@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
-import 'package:concept/page/home/home.dart';
-import 'package:concept/page/home/cart.dart';
-import 'package:concept/page/home/invoice.dart';
-import 'package:concept/page/home/profile.dart';
+import 'package:smartofficial/page/home/home.dart';
+import 'package:smartofficial/page/home/cart.dart';
+import 'package:smartofficial/page/home/invoice.dart';
+import 'package:smartofficial/page/home/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.title});

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:concept/core/models/product_model.dart';
-import 'package:concept/core/services/product_service.dart';
-import 'package:concept/core/services/cache/custom_cache_manager.dart';
+import 'package:smartofficial/core/models/product_model.dart';
+import 'package:smartofficial/core/services/product_service.dart';
+import 'package:smartofficial/core/services/cache/custom_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:concept/config/env.dart';
+import 'package:smartofficial/config/env.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:concept/core/services/toko_service.dart';
-import 'package:concept/page/home/toko/toko_detail_screen.dart';
+import 'package:smartofficial/core/services/toko_service.dart';
+import 'package:smartofficial/page/home/toko/toko_detail_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -19,38 +19,12 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   late Future<List<Product>> _futureProduct;
-  List<Product> _allProducts = [];
-  List<Product> _filteredProducts = [];
   String searchQuery = "";
 
   @override
   void initState() {
     super.initState();
-    _futureProduct = _loadProducts();
-  }
-
-  Future<List<Product>> _loadProducts() async {
-    final products = await ProductService.fetchProduct();
-    setState(() {
-      _allProducts = products;
-      _filteredProducts = products;
-    });
-    return products;
-  }
-
-  Future<void> _refreshProducts() async {
-    final products = await ProductService.fetchProduct();
-    setState(() {
-      _allProducts = products;
-      _filteredProducts = searchQuery.isNotEmpty
-          ? products.where((product) {
-              final name = product.namaProduk.toLowerCase();
-              final desc = product.deskripsi.toLowerCase();
-              return name.contains(searchQuery.toLowerCase()) ||
-                  desc.contains(searchQuery.toLowerCase());
-            }).toList()
-          : products;
-    });
+    _futureProduct = ProductService.fetchProduct();
   }
 
   void _launchWhatsApp(String noHp, String message) async {
@@ -68,23 +42,8 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
-  void _filterProducts(String query) {
-    final filtered = _allProducts.where((product) {
-      final name = product.namaProduk.toLowerCase();
-      final desc = product.deskripsi.toLowerCase();
-      return name.contains(query.toLowerCase()) ||
-          desc.contains(query.toLowerCase());
-    }).toList();
-
-    setState(() {
-      searchQuery = query;
-      _filteredProducts = filtered;
-    });
-  }
-
   void _showProductDetailModal(Product product) async {
     final toko = await TokoService.getTokoById(product.idToko);
-
     if (!mounted) return;
 
     showModalBottomSheet(
@@ -131,19 +90,16 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 const SizedBox(height: 16),
-                Text(
-                  product.namaProduk,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+                Text(product.namaProduk,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 Text(product.deskripsi),
                 const SizedBox(height: 8),
                 Text(
                   product.stok > 0 ? 'Stok: ${product.stok}' : 'Stok Habis',
                   style: TextStyle(
-                    color: product.stok > 0 ? Colors.green : Colors.red,
-                  ),
+                      color: product.stok > 0 ? Colors.green : Colors.red),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -160,8 +116,7 @@ class _CartScreenState extends State<CartScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => TokoDetailScreen(toko: toko),
-                      ),
+                          builder: (_) => TokoDetailScreen(toko: toko)),
                     );
                   },
                   child: Row(
@@ -231,6 +186,7 @@ Apakah masih tersedia?
       appBar: AppBar(
         title: const Text('Market Place'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFFF5F5F5),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
@@ -246,7 +202,11 @@ Apakah masih tersedia?
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              onChanged: _filterProducts,
+              onChanged: (query) {
+                setState(() {
+                  searchQuery = query;
+                });
+              },
               decoration: InputDecoration(
                 hintText: "Cari produk...",
                 prefixIcon: const Icon(Icons.search),
@@ -268,12 +228,40 @@ Apakah masih tersedia?
                 } else if (snapshot.hasError) {
                   return Center(
                       child: Text('Terjadi kesalahan: ${snapshot.error}'));
-                } else if (_filteredProducts.isEmpty) {
-                  return const Center(child: Text('Produk tidak ditemukan.'));
+                }
+
+                final allProducts = snapshot.data ?? [];
+                final filteredProducts = searchQuery.isNotEmpty
+                    ? allProducts.where((product) {
+                        final name = product.namaProduk.toLowerCase();
+                        final desc = product.deskripsi.toLowerCase();
+                        return name.contains(searchQuery.toLowerCase()) ||
+                            desc.contains(searchQuery.toLowerCase());
+                      }).toList()
+                    : allProducts;
+
+                if (filteredProducts.isEmpty) {
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      setState(() {
+                        _futureProduct = ProductService.fetchProduct();
+                      });
+                    },
+                    child: ListView(
+                      children: const [
+                        SizedBox(height: 200),
+                        Center(child: Text('Produk tidak ditemukan.')),
+                      ],
+                    ),
+                  );
                 }
 
                 return RefreshIndicator(
-                  onRefresh: _refreshProducts,
+                  onRefresh: () async {
+                    setState(() {
+                      _futureProduct = ProductService.fetchProduct();
+                    });
+                  },
                   child: GridView.builder(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -284,9 +272,9 @@ Apakah masih tersedia?
                       mainAxisSpacing: 5,
                       childAspectRatio: 0.62,
                     ),
-                    itemCount: _filteredProducts.length,
+                    itemCount: filteredProducts.length,
                     itemBuilder: (context, index) {
-                      final item = _filteredProducts[index];
+                      final item = filteredProducts[index];
                       return Card(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(

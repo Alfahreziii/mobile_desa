@@ -1,21 +1,21 @@
 // lib/config/routes.dart
 import 'package:flutter/material.dart';
-import 'package:concept/page/auth/login.dart';
-import 'package:concept/page/home/homepages.dart';
-import 'package:concept/page/auth/loginsignup.dart';
-import 'package:concept/page/auth/signup.dart';
-import 'package:concept/page/informasi/berita/detail_berita.dart';
-import 'package:concept/core/models/berita_model.dart';
-import 'package:concept/page/informasi/informasi.dart';
-import 'package:concept/page/laporan/laporan.dart';
-import 'package:concept/page/surat/surat.dart';
-import 'package:concept/page/profil/profil.dart';
-import 'package:concept/page/profil/pengurus.dart';
-import 'package:concept/page/profil/geografis.dart';
-import 'package:concept/page/aduan/aduan.dart';
-import 'package:concept/page/home/profile/edit.dart';
-import 'package:concept/page/home/profile/emailpassword.dart';
-import 'package:concept/page/iuran/iuran.dart';
+import 'package:smartofficial/page/auth/login.dart';
+import 'package:smartofficial/page/home/homepages.dart';
+import 'package:smartofficial/page/auth/loginsignup.dart';
+import 'package:smartofficial/page/auth/signup.dart';
+import 'package:smartofficial/page/informasi/berita/detail_berita.dart';
+import 'package:smartofficial/core/models/berita_model.dart';
+import 'package:smartofficial/page/informasi/informasi.dart';
+import 'package:smartofficial/page/laporan/laporan.dart';
+import 'package:smartofficial/page/surat/surat.dart';
+import 'package:smartofficial/page/profil/profil.dart';
+import 'package:smartofficial/page/profil/pengurus.dart';
+import 'package:smartofficial/page/profil/geografis.dart';
+import 'package:smartofficial/page/aduan/aduan.dart';
+import 'package:smartofficial/page/home/profile/edit.dart';
+import 'package:smartofficial/page/home/profile/emailpassword.dart';
+import 'package:smartofficial/page/iuran/iuran.dart';
 import 'package:logger/logger.dart';
 
 final logger = Logger();

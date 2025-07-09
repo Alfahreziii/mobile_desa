@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:concept/config/env.dart';
-import 'package:concept/core/models/pengurus_model.dart';
-import 'package:concept/core/services/cache/custom_cache_manager.dart';
-import 'package:concept/core/services/pengurus_service.dart';
+import 'package:smartofficial/config/env.dart';
+import 'package:smartofficial/core/models/pengurus_model.dart';
+import 'package:smartofficial/core/services/cache/custom_cache_manager.dart';
+import 'package:smartofficial/core/services/pengurus_service.dart';
 
 class PengurusPage extends StatefulWidget {
   const PengurusPage({super.key, this.title});

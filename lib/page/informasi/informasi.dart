@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'package:concept/core/services/berita_service.dart';
-import 'package:concept/core/services/kerjabakti_service.dart';
-import 'package:concept/core/services/rapat_service.dart';
-import 'package:concept/core/services/pengajian_service.dart';
-import 'package:concept/core/services/tahlil_service.dart';
+import 'package:smartofficial/core/services/berita_service.dart';
+import 'package:smartofficial/core/services/kerjabakti_service.dart';
+import 'package:smartofficial/core/services/rapat_service.dart';
+import 'package:smartofficial/core/services/pengajian_service.dart';
+import 'package:smartofficial/core/services/tahlil_service.dart';
 
-import 'package:concept/core/models/kerjabakti_model.dart';
-import 'package:concept/core/models/berita_model.dart';
-import 'package:concept/core/models/rapat_model.dart';
-import 'package:concept/core/models/pengajian_model.dart';
-import 'package:concept/core/models/tahlil_model.dart';
+import 'package:smartofficial/core/models/kerjabakti_model.dart';
+import 'package:smartofficial/core/models/berita_model.dart';
+import 'package:smartofficial/core/models/rapat_model.dart';
+import 'package:smartofficial/core/models/pengajian_model.dart';
+import 'package:smartofficial/core/models/tahlil_model.dart';
 
-import 'package:concept/widgets/card/berita_card.dart';
-import 'package:concept/widgets/card/kerjabakti_card.dart';
-import 'package:concept/widgets/card/rapat_card.dart';
-import 'package:concept/widgets/card/pengajian_card.dart';
-import 'package:concept/widgets/card/tahlil_card.dart';
+import 'package:smartofficial/widgets/card/berita_card.dart';
+import 'package:smartofficial/widgets/card/kerjabakti_card.dart';
+import 'package:smartofficial/widgets/card/rapat_card.dart';
+import 'package:smartofficial/widgets/card/pengajian_card.dart';
+import 'package:smartofficial/widgets/card/tahlil_card.dart';
 import 'package:logger/logger.dart';
 
 final logger = Logger();

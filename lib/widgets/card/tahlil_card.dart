@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:concept/core/models/tahlil_model.dart';
+import 'package:smartofficial/core/models/tahlil_model.dart';
 
 class TahlilCard extends StatelessWidget {
   final Tahlil tahlil;

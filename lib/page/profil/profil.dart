@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:concept/core/models/berita_model.dart';
-import 'package:concept/core/services/berita_service.dart';
+import 'package:smartofficial/core/models/berita_model.dart';
+import 'package:smartofficial/core/services/berita_service.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({super.key, this.title});

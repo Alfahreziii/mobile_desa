@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:concept/config/routes.dart';
-import 'package:concept/core/services/shared_prefs_service.dart';
+import 'package:smartofficial/config/routes.dart';
+import 'package:smartofficial/core/services/shared_prefs_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'concept',
+      title: 'smartofficial',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Merriweather',

@@ -23,9 +23,9 @@
 
     <application
         android:usesCleartextTraffic="true"
-        android:label="concept"
+        android:label="smartofficial"
         android:name="${applicationName}"
-        android:icon="@mipmap/logo_image">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

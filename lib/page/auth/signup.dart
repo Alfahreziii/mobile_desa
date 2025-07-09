@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:concept/core/models/user_model.dart';
-import 'package:concept/core/services/auth_service.dart';
+import 'package:smartofficial/core/models/user_model.dart';
+import 'package:smartofficial/core/services/auth_service.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});

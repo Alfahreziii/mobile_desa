@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:concept/core/models/user_model.dart';
+import 'package:smartofficial/core/models/user_model.dart';
 
 class SharedPrefsService {
   static Future<bool> isLoggedIn() async {

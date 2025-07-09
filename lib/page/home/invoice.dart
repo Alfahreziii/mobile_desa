@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:concept/core/models/iuran_history_model.dart';
-import 'package:concept/core/services/iuran_history_service.dart';
+import 'package:smartofficial/core/models/iuran_history_model.dart';
+import 'package:smartofficial/core/services/iuran_history_service.dart';
 
 class InvoicePage extends StatefulWidget {
   const InvoicePage({super.key});
@@ -12,26 +12,16 @@ class InvoicePage extends StatefulWidget {
 
 class _InvoicePageState extends State<InvoicePage> {
   late Future<List<IuranHistoryModel>> _futureHistory;
-  List<IuranHistoryModel> _data = [];
 
   @override
   void initState() {
     super.initState();
-    _futureHistory = _loadHistory();
-  }
-
-  Future<List<IuranHistoryModel>> _loadHistory() async {
-    final history = await IuranHistoryService.fetchHistory();
-    setState(() {
-      _data = history;
-    });
-    return history;
+    _futureHistory = IuranHistoryService.fetchHistory();
   }
 
   Future<void> _refreshHistory() async {
-    final history = await IuranHistoryService.fetchHistory();
     setState(() {
-      _data = history;
+      _futureHistory = IuranHistoryService.fetchHistory();
     });
   }
 
@@ -47,6 +37,7 @@ class _InvoicePageState extends State<InvoicePage> {
         centerTitle: true,
         backgroundColor: const Color(0xFFF5F5F5),
         elevation: 0,
+        automaticallyImplyLeading: false,
         iconTheme: const IconThemeData(color: Colors.black),
         titleTextStyle: const TextStyle(
           color: Colors.black,
@@ -62,18 +53,28 @@ class _InvoicePageState extends State<InvoicePage> {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Terjadi kesalahan: ${snapshot.error}'));
-          } else if (_data.isEmpty) {
-            return const Center(child: Text('Tidak ada data.'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return RefreshIndicator(
+              onRefresh: _refreshHistory,
+              child: ListView(
+                children: const [
+                  SizedBox(height: 200),
+                  Center(child: Text('Tidak ada data.')),
+                ],
+              ),
+            );
           }
+
+          final data = snapshot.data!;
 
           return RefreshIndicator(
             onRefresh: _refreshHistory,
             child: ListView.separated(
               padding: const EdgeInsets.all(16),
-              itemCount: _data.length,
+              itemCount: data.length,
               separatorBuilder: (_, __) => const Divider(),
               itemBuilder: (context, index) {
-                final item = _data[index];
+                final item = data[index];
                 return Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(

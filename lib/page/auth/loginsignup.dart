@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:concept/page/auth/login.dart';
+import 'package:smartofficial/page/auth/login.dart';
 
 class LoginPageSign extends StatelessWidget {
   const LoginPageSign({super.key});
